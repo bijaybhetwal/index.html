@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)file:///C:/Users/yadev/OneDrive/Desktop/everest-hostel.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Everest Hostel Management System</title>
+<link href="./Everest Hostel Management System_files/css2" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --g1:#e8f5e9;--g2:#c8e6c9;--g3:#66bb6a;--g4:#2e7d32;--g5:#1b5e20;
+  --b1:#e3f2fd;--b2:#bbdefb;--b3:#42a5f5;--b4:#1565c0;--b5:#0d47a1;
+  --r1:#ffebee;--r2:#ffcdd2;--r3:#ef5350;--r4:#c62828;
+  --bg:#f0fdf4;--card:#ffffff;--border:#c8e6c9;--border2:#a5d6a7;
+  --text:#1a2e1a;--muted:#5c7a5c;--sidebar-bg:linear-gradient(160deg,#1b5e20 0%,#0d47a1 100%);
+  --sidebar-w:220px;--font:'Nunito',sans-serif;
+  --shadow:0 2px 12px rgba(46,125,50,0.10);
+  --radius:10px;--radius-lg:14px;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sidebar-bg);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:50;overflow-y:auto;transition:transform 0.25s ease}
+.sidebar-logo{padding:22px 18px 16px;border-bottom:1px solid rgba(255,255,255,0.12)}
+.sidebar-logo h2{font-size:16px;font-weight:700;color:#fff;letter-spacing:0.3px}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,0.6);margin-top:3px}
+.nav-section{padding:10px 0}
+.nav-label{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;padding:6px 18px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);border-left:3px solid transparent;transition:all 0.15s;user-select:none}
+.nav-item:hover{background:rgba(255,255,255,0.09);color:#fff}
+.nav-item.active{background:rgba(255,255,255,0.14);color:#fff;border-left-color:#a5d6a7}
+.nav-icon{font-size:17px;width:22px;text-align:center;flex-shrink:0}
+.main{flex:1;margin-left:var(--sidebar-w);display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;gap:12px}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar h1{font-size:17px;font-weight:700;color:var(--text)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;font-size:22px;color:var(--text);padding:4px}
+.content{flex:1;padding:18px;max-width:1200px;width:100%}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:45}
+.overlay.show{display:block}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:600;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-primary{background:var(--g4);color:#fff}.btn-primary:hover{background:var(--g5)}
+.btn-blue{background:var(--b4);color:#fff}.btn-blue:hover{background:var(--b5)}
+.btn-red{background:var(--r3);color:#fff}.btn-red:hover{background:var(--r4)}
+.btn-outline{background:#fff;color:var(--text);border:1px solid var(--border2)}.btn-outline:hover{background:var(--g1)}
+.btn-green-outline{background:#fff;color:var(--g4);border:1px solid var(--g3)}.btn-green-outline:hover{background:var(--g1)}
+.btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
+.btn-xs{padding:3px 8px;font-size:11px;border-radius:5px}
+.btn-icon{padding:7px;border-radius:8px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.card-title{font-size:15px;font-weight:700;color:var(--text)}
+.card-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.stat-num{font-size:24px;font-weight:800;color:var(--g4)}
+.stat-num.blue{color:var(--b4)}.stat-num.red{color:var(--r3)}.stat-num.orange{color:#e65100}
+.stat-label{font-size:11px;color:var(--muted);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px}
+.stat-icon{font-size:22px;margin-bottom:6px}
+
+/* FORMS */
+.form-group{margin-bottom:12px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px}
+.form-input{width:100%;padding:9px 12px;border:1.5px solid var(--border2);border-radius:8px;font-family:var(--font);font-size:13px;background:#fff;color:var(--text);transition:border-color 0.15s}
+.form-input:focus{outline:none;border-color:var(--g3);background:#fff}
+select.form-input{cursor:pointer}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.form-row{display:flex;gap:8px;align-items:flex-end}
+textarea.form-input{resize:vertical;min-height:70px}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--g1);color:var(--g4);padding:10px 12px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #f1f8e9;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafff8}
+.table-empty{text-align:center;padding:40px 20px;color:var(--muted)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:var(--g1);color:var(--g4)}.badge-blue{background:var(--b1);color:var(--b4)}
+.badge-red{background:var(--r1);color:var(--r4)}.badge-yellow{background:#fff8e1;color:#e65100}
+.badge-gray{background:#f5f5f5;color:#555}.badge-purple{background:#f3e5f5;color:#6a1b9a}
+
+/* TABS */
+.tab-bar{display:flex;gap:4px;background:var(--g1);padding:4px;border-radius:10px;margin-bottom:16px;overflow-x:auto;flex-shrink:0}
+.tab{padding:7px 16px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600;color:var(--g4);border:none;background:transparent;white-space:nowrap;transition:all 0.15s;font-family:var(--font)}
+.tab.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* SECTIONS */
+.section{display:none}.section.active{display:block}
+
+/* AVATAR */
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--g4);flex-shrink:0}
+.avatar-lg{width:70px;height:70px;font-size:22px}
+.avatar img,.avatar-lg img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:22px;width:600px;max-height:90vh;overflow-y:auto;max-width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.18)}
+.modal-sm{width:440px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.modal-title{font-size:16px;font-weight:700}
+.modal-close{background:none;border:none;cursor:pointer;font-size:22px;color:var(--muted);line-height:1;padding:2px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.modal-close:hover{background:#f5f5f5}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ROOM CARDS */
+.room-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.room-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all 0.15s;border-left:4px solid var(--g3)}
+.room-card:hover{box-shadow:var(--shadow)}
+.room-card.occupied{border-left-color:var(--r3)}
+.room-card.partial{border-left-color:var(--b3)}
+.room-card.vacant{border-left-color:var(--g3)}
+.floor-label{font-size:11px;font-weight:700;color:var(--muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;gap:6px}
+.floor-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* STOCK BAR */
+.stock-bar{height:6px;border-radius:3px;background:var(--g1);overflow:hidden;margin-top:5px;min-width:60px}
+.stock-bar-fill{height:100%;border-radius:3px;background:var(--g3);transition:width 0.3s}
+.stock-bar-fill.low{background:var(--r3)}.stock-bar-fill.mid{background:#ff9800}
+
+/* PHOTO PREVIEW */
+.photo-preview{width:80px;height:80px;border-radius:10px;object-fit:cover;border:2px solid var(--border2);margin-top:6px;display:none}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.section-subtitle{font-size:12px;font-weight:700;color:var(--g4);text-transform:uppercase;letter-spacing:0.8px;margin:14px 0 10px;display:flex;align-items:center;gap:8px}
+.section-subtitle::after{content:'';flex:1;height:1px;background:var(--g2)}
+
+/* ALERT BOXES */
+.alert{padding:10px 14px;border-radius:8px;font-size:12px;font-weight:500;margin-bottom:12px}
+.alert-blue{background:var(--b1);color:var(--b4);border:1px solid var(--b2)}
+.alert-green{background:var(--g1);color:var(--g4);border:1px solid var(--g2)}
+.alert-red{background:var(--r1);color:var(--r4);border:1px solid var(--r2)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-state .icon{font-size:44px;margin-bottom:10px;opacity:0.7}
+.empty-state p{font-size:14px}
+
+/* TREE */
+.tree-block{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
+.tree-head{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--g1);font-weight:700;font-size:13px}
+.tree-floor{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 30px;border-top:1px solid var(--border);background:#fafff9;font-size:13px;font-weight:600}
+.tree-room{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 50px;border-top:1px solid #f0f9f0;font-size:12px}
+
+/* SEARCH */
+.search-box{position:relative;max-width:280px}
+.search-box input{padding-left:32px}
+.search-box::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;z-index:1}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;gap:4px;background:var(--g1);color:var(--g4);padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;margin:2px}
+.tag-close{cursor:pointer;font-size:14px;line-height:1;opacity:0.7}.tag-close:hover{opacity:1}
+
+/* INFO ROW */
+.info-row{display:flex;padding:7px 0;border-bottom:1px solid #f5f5f5;gap:12px}
+.info-label{font-size:12px;color:var(--muted);font-weight:600;width:130px;flex-shrink:0}
+.info-val{font-size:13px;color:var(--text)}
+
+/* MOBILE BOTTOM NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);z-index:50;padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
+.mobile-nav-inner{display:flex;justify-content:space-around}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;cursor:pointer;border-radius:8px;transition:all 0.15s;min-width:50px}
+.mobile-nav-item.active{color:var(--g4)}
+.mobile-nav-item:not(.active){color:var(--muted)}
+.mobile-nav-icon{font-size:20px}
+.mobile-nav-label{font-size:10px;font-weight:600}
+
+/* ID CARD */
+.id-card{width:320px;background:linear-gradient(135deg,#e8f5e9 0%,#e3f2fd 100%);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.15);font-family:var(--font)}
+.id-card-header{background:linear-gradient(135deg,#1b5e20,#0d47a1);padding:16px;text-align:center;color:#fff}
+.id-card-header h3{font-size:15px;font-weight:800;letter-spacing:0.5px}
+.id-card-header p{font-size:10px;opacity:0.8;margin-top:2px}
+.id-card-body{padding:16px;display:flex;gap:14px;align-items:flex-start}
+.id-card-photo{width:80px;height:90px;border-radius:8px;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.15);flex-shrink:0;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--g4)}
+.id-card-info{flex:1}
+.id-card-name{font-size:15px;font-weight:800;color:var(--g5);margin-bottom:6px}
+.id-row{font-size:11px;color:#333;margin-bottom:3px}
+.id-row span{font-weight:700;color:var(--b4)}
+.id-card-footer{background:rgba(27,94,32,0.08);padding:8px 16px;display:flex;justify-content:space-between;align-items:center}
+.id-card-footer p{font-size:10px;color:var(--muted)}
+.id-barcode{width:80px;height:24px;background:repeating-linear-gradient(90deg,#333 0px,#333 2px,#fff 2px,#fff 4px,#333 4px,#333 5px,#fff 5px,#fff 8px);border-radius:3px}
+
+/* RECEIPT */
+.receipt{max-width:380px;background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;font-family:var(--font)}
+.receipt-header{background:linear-gradient(135deg,#1b5e20,#0d47a1);padding:18px;text-align:center;color:#fff}
+.receipt-header h3{font-size:16px;font-weight:800}
+.receipt-header p{font-size:11px;opacity:0.8;margin-top:3px}
+.receipt-body{padding:18px}
+.receipt-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #e8f5e9;font-size:13px}
+.receipt-row.total{border-bottom:none;border-top:2px solid var(--g3);margin-top:6px;font-size:15px;font-weight:700;color:var(--g4);padding-top:10px}
+.receipt-stamp{text-align:center;margin-top:14px}
+.receipt-stamp .paid-stamp{display:inline-block;border:3px solid var(--g3);color:var(--g4);font-size:18px;font-weight:800;padding:6px 20px;border-radius:6px;transform:rotate(-5deg);letter-spacing:2px;opacity:0.85}
+.receipt-stamp .partial-stamp{border-color:var(--b3);color:var(--b4)}
+.receipt-footer{background:var(--g1);padding:10px 18px;text-align:center;font-size:11px;color:var(--muted)}
+
+/* REPORTS */
+.report-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px}
+.report-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12px}
+.report-bar-label{width:100px;color:var(--muted);font-weight:600;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.report-bar-wrap{flex:1;background:var(--g1);border-radius:4px;height:10px;overflow:hidden}
+.report-bar-fill{height:100%;background:var(--g3);border-radius:4px;transition:width 0.5s}
+.report-bar-val{width:60px;text-align:right;font-weight:600;color:var(--text);flex-shrink:0}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .mobile-nav{display:block}
+  .content{padding:14px 12px;padding-bottom:90px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-grid3{grid-template-columns:1fr}
+  .topbar{padding:10px 14px}
+  .topbar h1{font-size:15px}
+  .card{padding:13px}
+  td,th{padding:7px 8px;font-size:12px}
+  .id-card{width:100%;max-width:340px}
+  .receipt{max-width:100%}
+  .modal{padding:16px}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat-num{font-size:20px}
+  .btn{padding:7px 12px;font-size:12px}
+}
+
+/* PRINT STYLES */
+@media print{
+  body{background:#fff}
+  .app{display:block}
+  .sidebar,.topbar,.mobile-nav,.modal-overlay:not(.printing),.no-print{display:none!important}
+  .main{margin:0}
+  .print-area{display:block!important}
+  @page{margin:15mm}
+}
+.print-area{display:none}
+.print-receipt,.print-idcard{page-break-after:always}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--g2);border-radius:10px}
+
+/* ANIMATIONS */
+.section.active{animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.modal-overlay.open .modal{animation:slideUp 0.2s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* HIGHLIGHT */
+mark{background:var(--g2);padding:0 2px;border-radius:2px}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="app">
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h2>🏔 Everest Hostel</h2>
+    <p>Management System</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Main</div>
+    <div class="nav-item" onclick="showSection(&#39;dashboard&#39;)" id="nav-dashboard"><span class="nav-icon">🏠</span>Dashboard</div>
+    <div class="nav-item" onclick="showSection(&#39;students&#39;)" id="nav-students"><span class="nav-icon">👥</span>Students</div>
+    <div class="nav-item" onclick="showSection(&#39;fees&#39;)" id="nav-fees"><span class="nav-icon">💰</span>Fee Management</div>
+    <div class="nav-item active" onclick="showSection(&#39;rooms&#39;)" id="nav-rooms"><span class="nav-icon">🛏</span>Rooms</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Finance</div>
+    <div class="nav-item" onclick="showSection(&#39;expenses&#39;)" id="nav-expenses"><span class="nav-icon">📊</span>Expenses</div>
+    <div class="nav-item" onclick="showSection(&#39;orders&#39;)" id="nav-orders"><span class="nav-icon">📦</span>Orders &amp; Stock</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Reports</div>
+    <div class="nav-item" onclick="showSection(&#39;reports&#39;)" id="nav-reports"><span class="nav-icon">📈</span>Reports</div>
+    <div class="nav-item" onclick="showSection(&#39;settings&#39;)" id="nav-settings"><span class="nav-icon">⚙️</span>Settings</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <h1 id="page-title">Rooms</h1>
+    </div>
+    <div style="display:flex;gap:8px" id="topbar-btns"></div>
+  </div>
+  <div class="content" id="main-content">
+
+<!-- ===== DASHBOARD ===== -->
+<div class="section" id="sec-dashboard">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="d-students">0</div><div class="stat-label">Students</div></div>
+    <div class="stat-card"><div class="stat-icon">🛏</div><div class="stat-num blue" id="d-rooms">0/20</div><div class="stat-label">Rooms Occupied</div></div>
+    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-num" id="d-fee-month">Rs 0</div><div class="stat-label">Fee This Month</div></div>
+    <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-num red" id="d-pending">0</div><div class="stat-label">Pending Fees</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Recent Students</span></div>
+      <div id="dash-students"><div class="empty-state"><div class="icon">👥</div><p>No students yet</p></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Recent Payments</span></div>
+      <div id="dash-fees"><div class="empty-state"><div class="icon">💳</div><p>No payments yet</p></div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Pending Orders</span></div>
+      <div id="dash-orders"><div class="empty-state"><div class="icon">✅</div><p>No pending orders</p></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">This Month Expenses</span></div>
+      <div id="dash-expenses"><div class="empty-state"><div class="icon">📊</div><p>No expenses this month</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STUDENTS ===== -->
+<div class="section" id="sec-students">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Student Records</span>
+      <div class="card-actions">
+        <button class="btn btn-primary" onclick="openModal(&#39;modal-student&#39;)">+ Add Student</button>
+      </div>
+    </div>
+    <div class="search-box" style="margin-bottom:12px">
+      <input class="form-input" id="student-search" placeholder="Search by name, phone, citizenship..." oninput="renderStudents()">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Photo</th><th>Name</th><th>Age</th><th>Room</th><th>Phone</th><th>Fee/Mo</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="students-tbody"><tr><td colspan="8" class="table-empty"><div class="empty-state"><div class="icon">👥</div><p>No students yet. Add your first student!</p></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FEES ===== -->
+<div class="section" id="sec-fees">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="f-total">Rs 0</div><div class="stat-label">Total Collected</div></div>
+    <div class="stat-card"><div class="stat-num red" id="f-pending">Rs 0</div><div class="stat-label">Pending</div></div>
+    <div class="stat-card"><div class="stat-num blue" id="f-month">Rs 0</div><div class="stat-label">This Month</div></div>
+    <div class="stat-card"><div class="stat-num orange" id="f-advance">Rs 0</div><div class="stat-label">Advance Balance</div></div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab(this,&#39;fee-tab&#39;,&#39;fee-records&#39;)">Fee Records</button>
+    <button class="tab" onclick="switchTab(this,&#39;fee-tab&#39;,&#39;fee-pending&#39;)">Pending</button>
+    <button class="tab" onclick="switchTab(this,&#39;fee-tab&#39;,&#39;fee-advance-list&#39;)">Advance</button>
+  </div>
+  <div id="fee-records" class="tab-content active">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">All Fee Records</span>
+        <button class="btn btn-primary" onclick="openModal(&#39;modal-fee&#39;)">+ Record Payment</button>
+      </div>
+      <div class="form-row" style="margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <select class="form-input" id="fee-filter-student" onchange="renderFees()" style="max-width:180px"><option value="">All Students</option></select>
+        <input type="month" class="form-input" id="fee-filter-month" onchange="renderFees()" style="max-width:160px">
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById(&#39;fee-filter-student&#39;).value=&#39;&#39;;document.getElementById(&#39;fee-filter-month&#39;).value=&#39;&#39;;renderFees()">Clear</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Month</th><th>Fee</th><th>Paid</th><th>Balance</th><th>Advance</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="fees-tbody"><tr><td colspan="9" class="table-empty"><div class="empty-state"><div class="icon">💰</div><p>No fee records yet</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="fee-pending" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Students with Pending Fee</span></div>
+      <div id="pending-list"></div>
+    </div>
+  </div>
+  <div id="fee-advance-list" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Students with Advance Balance</span></div>
+      <div id="advance-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ROOMS ===== -->
+<div class="section active" id="sec-rooms">
+  <div class="tab-bar">
+    <button class="tab" onclick="switchTab(this,&#39;room-tab&#39;,&#39;room-view&#39;)">Room View</button>
+    <button class="tab active" onclick="switchTab(this,&#39;room-tab&#39;,&#39;room-blocks&#39;)">Manage Blocks</button>
+    <button class="tab" onclick="switchTab(this,&#39;room-tab&#39;,&#39;room-assign&#39;)">Assignments</button>
+  </div>
+  <div id="room-view" class="tab-content">
+    <div id="room-visual"><div class="card">
+      <div class="card-header"><span class="card-title">🏢 Block A</span>
+        <div style="display:flex;gap:6px">
+          <span class="badge badge-blue">0/3 occupied</span>
+        </div>
+      </div>
+      <div class="floor-label">📋 Floor Purple</div>
+        <div class="room-grid"><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 101</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 102</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 103</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div></div>
+      <div class="floor-label">📋 Mix Floor</div>
+        <p style="font-size:12px;color:var(--muted);padding:8px 0">No rooms on this floor</p>
+      <div class="floor-label">📋 Floor Red</div>
+        <p style="font-size:12px;color:var(--muted);padding:8px 0">No rooms on this floor</p>
+      <div class="floor-label">📋 Floor Green</div>
+        <p style="font-size:12px;color:var(--muted);padding:8px 0">No rooms on this floor</p>
+      <div class="floor-label">📋 Top Floor</div>
+        <p style="font-size:12px;color:var(--muted);padding:8px 0">No rooms on this floor</p>
+      
+      
+    </div><div class="card">
+      <div class="card-header"><span class="card-title">🏢 Block B</span>
+        <div style="display:flex;gap:6px">
+          <span class="badge badge-blue">0/0 occupied</span>
+        </div>
+      </div>
+      
+      <p style="color:var(--muted);font-size:13px">No floors added</p>
+    </div><div class="card">
+      <div class="card-header"><span class="card-title">🏢 Block C</span>
+        <div style="display:flex;gap:6px">
+          <span class="badge badge-blue">0/0 occupied</span>
+        </div>
+      </div>
+      
+      <p style="color:var(--muted);font-size:13px">No floors added</p>
+    </div><div class="card">
+      <div class="card-header"><span class="card-title">🏢 Block D</span>
+        <div style="display:flex;gap:6px">
+          <span class="badge badge-blue">0/0 occupied</span>
+        </div>
+      </div>
+      
+      <p style="color:var(--muted);font-size:13px">No floors added</p>
+    </div><div class="card">
+      <div class="card-header"><span class="card-title">🏢 Boys Block</span>
+        <div style="display:flex;gap:6px">
+          <span class="badge badge-blue">0/24 occupied</span>
+        </div>
+      </div>
+      <div class="floor-label">📋 Ground Floor</div>
+        <div class="room-grid"><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 101</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 102</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 103</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 104</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm warden room</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div></div>
+      <div class="floor-label">📋 First Floor</div>
+        <div class="room-grid"><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 201</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 202</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 203</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 204</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 205</div>
+            <div style="font-size:11px;color:var(--muted)">Triple</div>
+            <div style="font-size:11px;margin-top:3px">0/3 <span class="badge badge-green">Vacant</span></div>
+            
+          </div></div>
+      <div class="floor-label">📋 Second Floor</div>
+        <div class="room-grid"><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 301</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 302</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 303</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 304</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 305</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 306</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 307</div>
+            <div style="font-size:11px;color:var(--muted)">Triple</div>
+            <div style="font-size:11px;margin-top:3px">0/3 <span class="badge badge-green">Vacant</span></div>
+            
+          </div></div>
+      <div class="floor-label">📋 Third Floor</div>
+        <div class="room-grid"><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 401</div>
+            <div style="font-size:11px;color:var(--muted)">Double</div>
+            <div style="font-size:11px;margin-top:3px">0/2 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 402</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 403</div>
+            <div style="font-size:11px;color:var(--muted)">Dormitory</div>
+            <div style="font-size:11px;margin-top:3px">0/4 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 404</div>
+            <div style="font-size:11px;color:var(--muted)">Triple</div>
+            <div style="font-size:11px;margin-top:3px">0/3 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 405</div>
+            <div style="font-size:11px;color:var(--muted)">Single</div>
+            <div style="font-size:11px;margin-top:3px">0/1 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 406</div>
+            <div style="font-size:11px;color:var(--muted)">Triple</div>
+            <div style="font-size:11px;margin-top:3px">0/3 <span class="badge badge-green">Vacant</span></div>
+            
+          </div><div class="room-card vacant">
+            <div style="font-weight:700;font-size:13px">Rm 407</div>
+            <div style="font-size:11px;color:var(--muted)">Dormitory</div>
+            <div style="font-size:11px;margin-top:3px">0/4 <span class="badge badge-green">Vacant</span></div>
+            
+          </div></div>
+      
+      
+    </div></div>
+  </div>
+  <div id="room-blocks" class="tab-content active">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Blocks, Floors &amp; Rooms</span>
+        <button class="btn btn-primary" onclick="openModal(&#39;modal-block&#39;)">+ Add</button>
+      </div>
+      <div id="blocks-tree">
+    <div class="tree-block">
+      <div class="tree-head">🏢 Block A 
+        <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delBlock(&#39;177650197776160lm09lccgu&#39;)">Delete Block</button>
+      </div>
+      
+        <div class="tree-floor">📋 Floor Purple
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;177650197776160lm09lccgu&#39;,&#39;1776502025019lj3szktfsv&#39;)">Del Floor</button>
+        </div>
+        <div class="tree-room">🚪 Rm 101 — Single — Cap: 1 — 0 occupied — Rent: Rs 18,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;17765020884944kzquuc1xdr&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 102 — Single — Cap: 1 — 0 occupied — Rent: Rs 18,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;17765021088847c9n83o6qgv&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 103 — Single — Cap: 1 — 0 occupied — Rent: Rs 18,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776502123339yitqzxmefpb&#39;)">Del</button>
+          </div>
+      
+        <div class="tree-floor">📋 Mix Floor
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;177650197776160lm09lccgu&#39;,&#39;17765020381209ie8lmi0z8r&#39;)">Del Floor</button>
+        </div>
+        
+      
+        <div class="tree-floor">📋 Floor Red
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;177650197776160lm09lccgu&#39;,&#39;1776502047640vt3tpd29mwi&#39;)">Del Floor</button>
+        </div>
+        
+      
+        <div class="tree-floor">📋 Floor Green
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;177650197776160lm09lccgu&#39;,&#39;1776502055290g3pek9nx4&#39;)">Del Floor</button>
+        </div>
+        
+      
+        <div class="tree-floor">📋 Top Floor
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;177650197776160lm09lccgu&#39;,&#39;1776502061393zfcb4y2mza&#39;)">Del Floor</button>
+        </div>
+        
+      
+    </div>
+  
+    <div class="tree-block">
+      <div class="tree-head">🏢 Block B 
+        <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delBlock(&#39;1776501990748cy9tbdhxfaa&#39;)">Delete Block</button>
+      </div>
+      
+    </div>
+  
+    <div class="tree-block">
+      <div class="tree-head">🏢 Block C 
+        <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delBlock(&#39;1776502000280bi5s9rmff44&#39;)">Delete Block</button>
+      </div>
+      
+    </div>
+  
+    <div class="tree-block">
+      <div class="tree-head">🏢 Block D 
+        <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delBlock(&#39;1776502006270vxnjwnf9wqn&#39;)">Delete Block</button>
+      </div>
+      
+    </div>
+  
+    <div class="tree-block">
+      <div class="tree-head">🏢 Boys Block 
+        <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delBlock(&#39;1776512477572xzrj3voxs7&#39;)">Delete Block</button>
+      </div>
+      
+        <div class="tree-floor">📋 Ground Floor
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;1776512477572xzrj3voxs7&#39;,&#39;1776512494902vufccyfxs&#39;)">Del Floor</button>
+        </div>
+        <div class="tree-room">🚪 Rm 101 — Single — Cap: 1 — 0 occupied — Rent: Rs 15,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512554950mx80qu2kvi&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 102 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;177651257091096p5e21gbrb&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 103 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512579431lsc8i27537&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 104 — Single — Cap: 1 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512596076o9ayzz1f4f8&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm warden room — Single — Cap: 1 — 0 occupied 
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512615332d81bale8wsa&#39;)">Del</button>
+          </div>
+      
+        <div class="tree-floor">📋 First Floor
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;1776512477572xzrj3voxs7&#39;,&#39;1776512504893g76zrtfuo4&#39;)">Del Floor</button>
+        </div>
+        <div class="tree-room">🚪 Rm 201 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512635115olb9okv5zjn&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 202 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512646354u4rkxqfj7p&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 203 — Double — Cap: 2 — 0 occupied — Rent: Rs 12,500
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512659004w1ratbnfke&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 204 — Single — Cap: 1 — 0 occupied — Rent: Rs 13,500
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512682118rd2vomngsz&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 205 — Triple — Cap: 3 — 0 occupied — Rent: Rs 11,500
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776512699459isgt6ftz8gf&#39;)">Del</button>
+          </div>
+      
+        <div class="tree-floor">📋 Second Floor
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;1776512477572xzrj3voxs7&#39;,&#39;17765125120378zoh0oe3cbu&#39;)">Del Floor</button>
+        </div>
+        <div class="tree-room">🚪 Rm 301 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776516945219a1mqcrcnqs6&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 302 — Single — Cap: 1 — 0 occupied — Rent: Rs 15,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776516960103waplves548m&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 303 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776516971947jgq0ck7j62&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 304 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776516980226ghhd684wg1b&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 305 — Single — Cap: 1 — 0 occupied — Rent: Rs 14,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;17765169964791bvteyoa5sm&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 306 — Single — Cap: 1 — 0 occupied — Rent: Rs 12,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;177651701654244ns6mpwsv5&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 307 — Triple — Cap: 3 — 0 occupied — Rent: Rs 11,500
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517042311zks0pyrv5rn&#39;)">Del</button>
+          </div>
+      
+        <div class="tree-floor">📋 Third Floor
+          <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delFloor(&#39;1776512477572xzrj3voxs7&#39;,&#39;1776512521226f1zsxbl8g7r&#39;)">Del Floor</button>
+        </div>
+        <div class="tree-room">🚪 Rm 401 — Double — Cap: 2 — 0 occupied — Rent: Rs 13,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517243938wk9yrqwso3&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 402 — Single — Cap: 1 — 0 occupied — Rent: Rs 14,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517252753us7twxq7kq9&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 403 — Dormitory — Cap: 4 — 0 occupied — Rent: Rs 11,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517264694dg864odp08c&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 404 — Triple — Cap: 3 — 0 occupied — Rent: Rs 11,500
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517283697debelfs58yt&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 405 — Single — Cap: 1 — 0 occupied — Rent: Rs 14,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517299378h51qgmh3kqh&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 406 — Triple — Cap: 3 — 0 occupied — Rent: Rs 11,500
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;17765173109778lk1nwtvkn4&#39;)">Del</button>
+          </div><div class="tree-room">🚪 Rm 407 — Dormitory — Cap: 4 — 0 occupied — Rent: Rs 11,000
+            <button class="btn btn-red btn-xs" style="margin-left:auto" onclick="delRoom(&#39;1776517323013mirbqhcylw&#39;)">Del</button>
+          </div>
+      
+    </div>
+  </div>
+    </div>
+  </div>
+  <div id="room-assign" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Assign Student to Room</span></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Student</label><select class="form-input" id="assign-student"><option value="">Select student...</option></select></div>
+        <div class="form-group"><label class="form-label">Room</label><select class="form-input" id="assign-room"><option value="">Select room...</option><option value="17765020884944kzquuc1xdr">Block A - Floor Purple - Rm 101 (Single)</option><option value="17765021088847c9n83o6qgv">Block A - Floor Purple - Rm 102 (Single)</option><option value="1776502123339yitqzxmefpb">Block A - Floor Purple - Rm 103 (Single)</option><option value="1776512554950mx80qu2kvi">Boys Block - Ground Floor - Rm 101 (Single)</option><option value="177651257091096p5e21gbrb">Boys Block - Ground Floor - Rm 102 (Double)</option><option value="1776512579431lsc8i27537">Boys Block - Ground Floor - Rm 103 (Double)</option><option value="1776512596076o9ayzz1f4f8">Boys Block - Ground Floor - Rm 104 (Single)</option><option value="1776512615332d81bale8wsa">Boys Block - Ground Floor - Rm warden room (Single)</option><option value="1776512635115olb9okv5zjn">Boys Block - First Floor - Rm 201 (Double)</option><option value="1776512646354u4rkxqfj7p">Boys Block - First Floor - Rm 202 (Double)</option><option value="1776512659004w1ratbnfke">Boys Block - First Floor - Rm 203 (Double)</option><option value="1776512682118rd2vomngsz">Boys Block - First Floor - Rm 204 (Single)</option><option value="1776512699459isgt6ftz8gf">Boys Block - First Floor - Rm 205 (Triple)</option><option value="1776516945219a1mqcrcnqs6">Boys Block - Second Floor - Rm 301 (Double)</option><option value="1776516960103waplves548m">Boys Block - Second Floor - Rm 302 (Single)</option><option value="1776516971947jgq0ck7j62">Boys Block - Second Floor - Rm 303 (Double)</option><option value="1776516980226ghhd684wg1b">Boys Block - Second Floor - Rm 304 (Double)</option><option value="17765169964791bvteyoa5sm">Boys Block - Second Floor - Rm 305 (Single)</option><option value="177651701654244ns6mpwsv5">Boys Block - Second Floor - Rm 306 (Single)</option><option value="1776517042311zks0pyrv5rn">Boys Block - Second Floor - Rm 307 (Triple)</option><option value="1776517243938wk9yrqwso3">Boys Block - Third Floor - Rm 401 (Double)</option><option value="1776517252753us7twxq7kq9">Boys Block - Third Floor - Rm 402 (Single)</option><option value="1776517264694dg864odp08c">Boys Block - Third Floor - Rm 403 (Dormitory)</option><option value="1776517283697debelfs58yt">Boys Block - Third Floor - Rm 404 (Triple)</option><option value="1776517299378h51qgmh3kqh">Boys Block - Third Floor - Rm 405 (Single)</option><option value="17765173109778lk1nwtvkn4">Boys Block - Third Floor - Rm 406 (Triple)</option><option value="1776517323013mirbqhcylw">Boys Block - Third Floor - Rm 407 (Dormitory)</option></select></div>
+      </div>
+      <button class="btn btn-primary" onclick="assignRoom()">Assign Room</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Current Assignments</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Block</th><th>Floor</th><th>Room</th><th>Type</th><th>Since</th><th>Action</th></tr></thead>
+          <tbody id="assign-tbody"><tr><td colspan="7"><div class="empty-state"><div class="icon">🔑</div><p>No assignments yet</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EXPENSES ===== -->
+<div class="section" id="sec-expenses">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num red" id="e-total">Rs 0</div><div class="stat-label">Total Expenses</div></div>
+    <div class="stat-card"><div class="stat-num red" id="e-month">Rs 0</div><div class="stat-label">This Month</div></div>
+    <div class="stat-card"><div class="stat-num blue" id="e-count">0</div><div class="stat-label">Transactions</div></div>
+    <div class="stat-card"><div class="stat-num" id="e-cats">0</div><div class="stat-label">Categories</div></div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab(this,&#39;exp-tab&#39;,&#39;exp-records&#39;)">Records</button>
+    <button class="tab" onclick="switchTab(this,&#39;exp-tab&#39;,&#39;exp-cats&#39;)">Categories</button>
+  </div>
+  <div id="exp-records" class="tab-content active">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Expense Records</span>
+        <div class="card-actions">
+          <button class="btn btn-red" onclick="openModal(&#39;modal-expense&#39;)">+ Add Expense</button>
+        </div>
+      </div>
+      <div class="form-row" style="margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <select class="form-input" id="exp-filter-cat" onchange="renderExpenses()" style="max-width:180px"><option value="">All Categories</option></select>
+        <input type="month" class="form-input" id="exp-filter-month" onchange="renderExpenses()" style="max-width:160px">
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById(&#39;exp-filter-cat&#39;).value=&#39;&#39;;document.getElementById(&#39;exp-filter-month&#39;).value=&#39;&#39;;renderExpenses()">Clear</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Category</th><th>Sub-category</th><th>Description</th><th>Amount</th><th>Action</th></tr></thead>
+          <tbody id="exp-tbody"><tr><td colspan="6" class="table-empty"><div class="empty-state"><div class="icon">📊</div><p>No expenses yet</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="exp-cats" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Expense Categories</span>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openModal(&#39;modal-cat&#39;)">+ Add Category</button>
+        </div>
+      </div>
+      <div id="cats-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ORDERS & STOCK ===== -->
+<div class="section" id="sec-orders">
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab(this,&#39;ord-tab&#39;,&#39;ord-orders&#39;)">Orders</button>
+    <button class="tab" onclick="switchTab(this,&#39;ord-tab&#39;,&#39;ord-stock&#39;)">Monthly Stock</button>
+    <button class="tab" onclick="switchTab(this,&#39;ord-tab&#39;,&#39;ord-items&#39;)">Stock Items</button>
+  </div>
+  <div id="ord-orders" class="tab-content active">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Order Tracking</span>
+        <button class="btn btn-blue" onclick="openModal(&#39;modal-order&#39;)">+ New Order</button>
+      </div>
+      <div class="form-row" style="margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <select class="form-input" id="ord-filter-status" onchange="renderOrders()" style="max-width:160px">
+          <option value="">All Status</option><option>Pending</option><option>Ordered</option><option>Received</option><option>Cancelled</option>
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById(&#39;ord-filter-status&#39;).value=&#39;&#39;;renderOrders()">Clear</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Item</th><th>Qty</th><th>Unit</th><th>Vendor</th><th>Amount</th><th>Status</th><th>Notes</th><th>Actions</th></tr></thead>
+          <tbody id="ord-tbody"><tr><td colspan="9" class="table-empty"><div class="empty-state"><div class="icon">🛒</div><p>No orders yet</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="ord-stock" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Monthly Stock</span>
+        <div class="card-actions">
+          <select class="form-input" id="stock-month-sel" onchange="renderStock()" style="max-width:160px"><option value="2026-04" selected="">2026-04</option></select>
+          <button class="btn btn-blue" onclick="openModal(&#39;modal-stock-entry&#39;)">+ Entry</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Category</th><th>Opening</th><th>Received</th><th>Used</th><th>Closing</th><th>Unit</th><th>Level</th><th>Action</th></tr></thead>
+          <tbody id="stock-tbody"><tr><td colspan="9" class="table-empty"><div class="empty-state"><div class="icon">📦</div><p>No stock entries</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="ord-items" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Stock Items</span>
+        <button class="btn btn-primary" onclick="openModal(&#39;modal-stock-item&#39;)">+ Add Item</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Category</th><th>Unit</th><th>Min Level</th><th>Action</th></tr></thead>
+          <tbody id="sitems-tbody"><tr><td colspan="5" class="table-empty"><div class="empty-state"><div class="icon">🗃</div><p>No items yet</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REPORTS ===== -->
+<div class="section" id="sec-reports">
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab(this,&#39;rep-tab&#39;,&#39;rep-monthly&#39;)">Monthly Summary</button>
+    <button class="tab" onclick="switchTab(this,&#39;rep-tab&#39;,&#39;rep-students&#39;)">Student Report</button>
+    <button class="tab" onclick="switchTab(this,&#39;rep-tab&#39;,&#39;rep-fees&#39;)">Fee Report</button>
+    <button class="tab" onclick="switchTab(this,&#39;rep-tab&#39;,&#39;rep-expenses&#39;)">Expense Report</button>
+  </div>
+  <div id="rep-monthly" class="tab-content active">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Monthly Summary</span>
+        <div class="card-actions">
+          <input type="month" class="form-input" id="rep-month" style="max-width:160px" oninput="renderMonthlyReport()">
+          <button class="btn btn-outline" onclick="printReport()">🖨 Print</button>
+        </div>
+      </div>
+      <div id="monthly-report-content"></div>
+    </div>
+  </div>
+  <div id="rep-students" class="tab-content">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Student Summary</span><button class="btn btn-outline" onclick="printReport()">🖨 Print</button></div>
+      <div id="student-report-content"></div>
+    </div>
+  </div>
+  <div id="rep-fees" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Fee Collection Report</span>
+        <div class="card-actions">
+          <input type="month" class="form-input" id="rep-fee-month" style="max-width:160px" oninput="renderFeeReport()">
+          <button class="btn btn-outline" onclick="printReport()">🖨 Print</button>
+        </div>
+      </div>
+      <div id="fee-report-content"></div>
+    </div>
+  </div>
+  <div id="rep-expenses" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Expense Report</span>
+        <div class="card-actions">
+          <input type="month" class="form-input" id="rep-exp-month" style="max-width:160px" oninput="renderExpReport()">
+          <button class="btn btn-outline" onclick="printReport()">🖨 Print</button>
+        </div>
+      </div>
+      <div id="exp-report-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="section" id="sec-settings">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Hostel Information</span></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Hostel Name</label><input class="form-input" id="set-name" value="Everest Hostel"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="set-phone" placeholder="Contact number"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="set-email" placeholder="Email address"></div>
+      <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="set-address" placeholder="Hostel address"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Data Management</span></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--g1);border-radius:10px">
+        <div><div style="font-weight:600;font-size:14px">Backup Data</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Export all data as a JSON file</div></div>
+        <button class="btn btn-primary" onclick="backupData()">📥 Download Backup</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--b1);border-radius:10px">
+        <div><div style="font-weight:600;font-size:14px">Restore Data</div><div style="font-size:12px;color:var(--muted);margin-top:2px">Import from a backup file</div></div>
+        <label class="btn btn-blue" style="cursor:pointer">📤 Restore <input type="file" accept=".json" style="display:none" onchange="restoreData(this)"></label>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--r1);border-radius:10px">
+        <div><div style="font-weight:600;font-size:14px;color:var(--r4)">Clear All Data</div><div style="font-size:12px;color:var(--muted);margin-top:2px">This will delete everything permanently</div></div>
+        <button class="btn btn-red" onclick="clearAllData()">🗑 Clear Data</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">About</span></div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8">
+      <p><strong>Everest Hostel Management System</strong></p>
+      <p>Version 2.0 — Fully offline, runs in browser</p>
+      <p>All data is stored locally in your browser</p>
+    </div>
+  </div>
+</div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+</div><!-- end app -->
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <div class="mobile-nav-item" id="mnav-dashboard" onclick="showSection(&#39;dashboard&#39;)"><div class="mobile-nav-icon">🏠</div><div class="mobile-nav-label">Home</div></div>
+    <div class="mobile-nav-item" id="mnav-students" onclick="showSection(&#39;students&#39;)"><div class="mobile-nav-icon">👥</div><div class="mobile-nav-label">Students</div></div>
+    <div class="mobile-nav-item" id="mnav-fees" onclick="showSection(&#39;fees&#39;)"><div class="mobile-nav-icon">💰</div><div class="mobile-nav-label">Fees</div></div>
+    <div class="mobile-nav-item active" id="mnav-rooms" onclick="showSection(&#39;rooms&#39;)"><div class="mobile-nav-icon">🛏</div><div class="mobile-nav-label">Rooms</div></div>
+    <div class="mobile-nav-item" id="mnav-more" onclick="toggleMobileMenu()"><div class="mobile-nav-icon">⋯</div><div class="mobile-nav-label">More</div></div>
+  </div>
+</div>
+
+<!-- MOBILE MORE MENU -->
+<div id="mobile-more-menu" style="display:none;position:fixed;bottom:70px;right:12px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:60;min-width:170px;overflow:hidden">
+  <div onclick="showSection(&#39;expenses&#39;);toggleMobileMenu()" style="padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:600;border-bottom:1px solid var(--border)"><span>📊</span>Expenses</div>
+  <div onclick="showSection(&#39;orders&#39;);toggleMobileMenu()" style="padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:600;border-bottom:1px solid var(--border)"><span>📦</span>Orders &amp; Stock</div>
+  <div onclick="showSection(&#39;reports&#39;);toggleMobileMenu()" style="padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:600;border-bottom:1px solid var(--border)"><span>📈</span>Reports</div>
+  <div onclick="showSection(&#39;settings&#39;);toggleMobileMenu()" style="padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;font-weight:600"><span>⚙️</span>Settings</div>
+</div>
+
+<!-- ===== ALL MODALS ===== -->
+
+<!-- ADD STUDENT -->
+<div class="modal-overlay" id="modal-student">
+<div class="modal">
+  <div class="modal-header"><span class="modal-title" id="student-modal-title">Add New Student</span><button class="modal-close" onclick="closeModal('modal-student')">×</button></div>
+  <input type="hidden" id="s-edit-id">
+  <div class="section-subtitle">Personal Information</div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="s-name" placeholder="Student full name"></div>
+    <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="s-age" type="number" placeholder="Age"></div>
+    <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input" id="s-dob" type="date"></div>
+    <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" id="s-phone" placeholder="Phone"></div>
+    <div class="form-group"><label class="form-label">Citizenship Number</label><input class="form-input" id="s-cit" placeholder="Citizenship number"></div>
+    <div class="form-group"><label class="form-label">Monthly Fee (Rs) *</label><input class="form-input" id="s-fee" type="number" placeholder="e.g. 3000"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="s-address" placeholder="Home address"></div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Student Photo</label><input type="file" class="form-input" id="s-photo" accept="image/*" onchange="previewImg(this,&#39;s-photo-prev&#39;)"><img id="s-photo-prev" class="photo-preview"></div>
+    <div class="form-group"><label class="form-label">Citizenship Photo</label><input type="file" class="form-input" id="s-cit-photo" accept="image/*" onchange="previewImg(this,&#39;s-cit-prev&#39;)"><img id="s-cit-prev" class="photo-preview"></div>
+  </div>
+  <hr class="divider">
+  <div class="section-subtitle">Parent / Guardian Information</div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Parent Name</label><input class="form-input" id="s-pname" placeholder="Parent/Guardian name"></div>
+    <div class="form-group"><label class="form-label">Occupation</label><input class="form-input" id="s-pocc" placeholder="Occupation"></div>
+    <div class="form-group"><label class="form-label">Parent Phone</label><input class="form-input" id="s-pphone" placeholder="Parent phone"></div>
+    <div class="form-group"><label class="form-label">Relationship</label><input class="form-input" id="s-prel" placeholder="Father / Mother / Guardian"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal('modal-student')">Cancel</button>
+    <button class="btn btn-primary" id="student-save-btn" onclick="saveStudent()">Save Student</button>
+  </div>
+</div>
+</div>
+
+<!-- VIEW STUDENT -->
+<div class="modal-overlay" id="modal-view-student">
+<div class="modal">
+  <div class="modal-header"><span class="modal-title">Student Profile</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-blue btn-sm" id="btn-print-id" onclick="printIDCard()">🪪 ID Card</button>
+      <button class="modal-close" onclick="closeModal(&#39;modal-view-student&#39;)">×</button>
+    </div>
+  </div>
+  <div id="student-profile"></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-view-student&#39;)">Close</button>
+    <button class="btn btn-primary" id="btn-edit-student">✏️ Edit</button>
+  </div>
+</div>
+</div>
+
+<!-- RECORD FEE -->
+<div class="modal-overlay" id="modal-fee">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Record Fee Payment</span><button class="modal-close" onclick="closeModal(&#39;modal-fee&#39;)">×</button></div>
+  <div class="form-group"><label class="form-label">Student *</label><select class="form-input" id="fee-student" onchange="fillStudentFee()"><option value="">Select student...</option></select></div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Month *</label><input class="form-input" id="fee-month-inp" type="month"></div>
+    <div class="form-group"><label class="form-label">Fee Amount (Rs)</label><input class="form-input" id="fee-amt" type="number" placeholder="Auto from student"></div>
+  </div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Amount Paid (Rs) *</label><input class="form-input" id="fee-paid" type="number" placeholder="Amount paid"></div>
+    <div class="form-group"><label class="form-label">Payment Method</label><select class="form-input" id="fee-method"><option>Cash</option><option>Online Transfer</option><option>Cheque</option><option>Other</option></select></div>
+  </div>
+  <div class="form-group"><label class="form-label">Notes</label><input class="form-input" id="fee-notes" placeholder="Optional notes"></div>
+  <div class="alert alert-blue">💡 If paid amount + advance exceeds fee, extra is stored as advance for next month.</div>
+  <div id="fee-calc" style="background:var(--g1);padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:4px"></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-fee&#39;)">Cancel</button>
+    <button class="btn btn-primary" onclick="saveFee()">Record Payment</button>
+  </div>
+</div>
+</div>
+
+<!-- VIEW RECEIPT -->
+<div class="modal-overlay" id="modal-receipt">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Fee Receipt</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn btn-primary btn-sm" onclick="printReceipt()">🖨 Print</button>
+      <button class="modal-close" onclick="closeModal(&#39;modal-receipt&#39;)">×</button>
+    </div>
+  </div>
+  <div id="receipt-content" style="display:flex;justify-content:center"></div>
+</div>
+</div>
+
+<!-- ADD BLOCK/FLOOR/ROOM -->
+<div class="modal-overlay" id="modal-block">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Manage Blocks / Floors / Rooms</span><button class="modal-close" onclick="closeModal(&#39;modal-block&#39;)">×</button></div>
+  <div class="tab-bar">
+    <button class="tab" onclick="switchTab(this,&#39;blk-tab&#39;,&#39;blk-block&#39;)">Block</button>
+    <button class="tab" onclick="switchTab(this,&#39;blk-tab&#39;,&#39;blk-floor&#39;)">Floor</button>
+    <button class="tab active" onclick="switchTab(this,&#39;blk-tab&#39;,&#39;blk-room&#39;)">Room</button>
+  </div>
+  <div id="blk-block" class="tab-content">
+    <div class="form-group"><label class="form-label">Block Name *</label><input class="form-input" id="blk-name" placeholder="e.g. Block A, Boys Block"></div>
+    <div class="form-group"><label class="form-label">Description</label><input class="form-input" id="blk-desc" placeholder="Optional description"></div>
+    <button class="btn btn-primary" onclick="addBlock()">Add Block</button>
+  </div>
+  <div id="blk-floor" class="tab-content">
+    <div class="form-group"><label class="form-label">Block *</label><select class="form-input" id="floor-blk"><option value="">Select block...</option><option value="177650197776160lm09lccgu">Block A</option><option value="1776501990748cy9tbdhxfaa">Block B</option><option value="1776502000280bi5s9rmff44">Block C</option><option value="1776502006270vxnjwnf9wqn">Block D</option><option value="1776512477572xzrj3voxs7">Boys Block</option></select></div>
+    <div class="form-group"><label class="form-label">Floor Name *</label><input class="form-input" id="floor-name" placeholder="e.g. Ground Floor, 1st Floor"></div>
+    <button class="btn btn-primary" onclick="addFloor()">Add Floor</button>
+  </div>
+  <div id="blk-room" class="tab-content active">
+    <div class="form-group"><label class="form-label">Block *</label><select class="form-input" id="room-blk" onchange="populateRoomFloors()"><option value="">Select block...</option><option value="177650197776160lm09lccgu">Block A</option><option value="1776501990748cy9tbdhxfaa">Block B</option><option value="1776502000280bi5s9rmff44">Block C</option><option value="1776502006270vxnjwnf9wqn">Block D</option><option value="1776512477572xzrj3voxs7">Boys Block</option></select></div>
+    <div class="form-group"><label class="form-label">Floor *</label><select class="form-input" id="room-flr"><option value="">Select floor...</option><option value="1776512494902vufccyfxs">Ground Floor</option><option value="1776512504893g76zrtfuo4">First Floor</option><option value="17765125120378zoh0oe3cbu">Second Floor</option><option value="1776512521226f1zsxbl8g7r">Third Floor</option></select></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Room Number *</label><input class="form-input" id="room-num" placeholder="e.g. 101"></div>
+      <div class="form-group"><label class="form-label">Capacity</label><input class="form-input" id="room-cap" type="number" value="1" min="1"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Room Type</label>
+      <select class="form-input" id="room-type"><option>Single</option><option>Double</option><option>Triple</option><option>Dormitory</option><option>Suite</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Monthly Rent (Rs)</label><input class="form-input" id="room-rent" type="number" placeholder="Optional default rent"></div>
+    <button class="btn btn-primary" onclick="addRoom()">Add Room</button>
+  </div>
+</div>
+</div>
+
+<!-- ADD EXPENSE CATEGORY -->
+<div class="modal-overlay" id="modal-cat">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Expense Categories</span><button class="modal-close" onclick="closeModal(&#39;modal-cat&#39;)">×</button></div>
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab(this,&#39;cat-tab&#39;,&#39;cat-main&#39;)">Main Category</button>
+    <button class="tab" onclick="switchTab(this,&#39;cat-tab&#39;,&#39;cat-sub&#39;)">Sub-category</button>
+  </div>
+  <div id="cat-main" class="tab-content active">
+    <div class="form-group"><label class="form-label">Category Name *</label><input class="form-input" id="cat-name" placeholder="e.g. Food, Utilities, Maintenance"></div>
+    <div class="form-group"><label class="form-label">Icon (emoji)</label><input class="form-input" id="cat-icon" placeholder="e.g. 🍽 💡 🔧" maxlength="2"></div>
+    <button class="btn btn-primary" onclick="addCat()">Add Category</button>
+  </div>
+  <div id="cat-sub" class="tab-content">
+    <div class="form-group"><label class="form-label">Parent Category *</label><select class="form-input" id="sub-parent"><option value="">Select category...</option></select></div>
+    <div class="form-group"><label class="form-label">Sub-category Name *</label><input class="form-input" id="subcat-name" placeholder="e.g. Breakfast, Electricity bill"></div>
+    <button class="btn btn-primary" onclick="addSubCat()">Add Sub-category</button>
+  </div>
+</div>
+</div>
+
+<!-- ADD EXPENSE -->
+<div class="modal-overlay" id="modal-expense">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Add Expense</span><button class="modal-close" onclick="closeModal(&#39;modal-expense&#39;)">×</button></div>
+  <div class="form-group"><label class="form-label">Category *</label><select class="form-input" id="exp-cat" onchange="populateSubCats()"><option value="">Select category...</option></select></div>
+  <div class="form-group"><label class="form-label">Sub-category</label><select class="form-input" id="exp-subcat"><option value="">Select sub-category...</option></select></div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Amount (Rs) *</label><input class="form-input" id="exp-amt" type="number" placeholder="Amount"></div>
+    <div class="form-group"><label class="form-label">Date *</label><input class="form-input" id="exp-date" type="date"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="exp-desc" placeholder="Details about this expense" rows="2"></textarea></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-expense&#39;)">Cancel</button>
+    <button class="btn btn-red" onclick="saveExpense()">Add Expense</button>
+  </div>
+</div>
+</div>
+
+<!-- ADD ORDER -->
+<div class="modal-overlay" id="modal-order">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title" id="order-modal-title">New Order</span><button class="modal-close" onclick="closeModal(&#39;modal-order&#39;)">×</button></div>
+  <input type="hidden" id="ord-edit-id">
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Item Name *</label><input class="form-input" id="ord-item" placeholder="Item name"></div>
+    <div class="form-group"><label class="form-label">Quantity *</label><input class="form-input" id="ord-qty" type="number" placeholder="Qty" min="0"></div>
+    <div class="form-group"><label class="form-label">Unit</label><input class="form-input" id="ord-unit" placeholder="kg, pcs, litre..."></div>
+    <div class="form-group"><label class="form-label">Vendor</label><input class="form-input" id="ord-vendor" placeholder="Vendor name"></div>
+    <div class="form-group"><label class="form-label">Amount (Rs)</label><input class="form-input" id="ord-amt" type="number" placeholder="Total amount"></div>
+    <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="ord-date" type="date"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Status</label>
+    <select class="form-input" id="ord-status"><option>Pending</option><option>Ordered</option><option>Received</option><option>Cancelled</option></select>
+  </div>
+  <div class="form-group"><label class="form-label">Notes</label><input class="form-input" id="ord-notes" placeholder="Additional notes"></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-order&#39;)">Cancel</button>
+    <button class="btn btn-blue" onclick="saveOrder()">Save Order</button>
+  </div>
+</div>
+</div>
+
+<!-- ADD STOCK ITEM -->
+<div class="modal-overlay" id="modal-stock-item">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Add Stock Item</span><button class="modal-close" onclick="closeModal(&#39;modal-stock-item&#39;)">×</button></div>
+  <div class="form-group"><label class="form-label">Item Name *</label><input class="form-input" id="si-name" placeholder="e.g. Rice, Oil, Sugar"></div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Unit</label><input class="form-input" id="si-unit" placeholder="kg, litre, pcs..."></div>
+    <div class="form-group"><label class="form-label">Minimum Level</label><input class="form-input" id="si-min" type="number" placeholder="Alert below this"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Category</label><input class="form-input" id="si-cat" placeholder="e.g. Food, Cleaning, Stationery"></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-stock-item&#39;)">Cancel</button>
+    <button class="btn btn-primary" onclick="saveStockItem()">Add Item</button>
+  </div>
+</div>
+</div>
+
+<!-- STOCK ENTRY -->
+<div class="modal-overlay" id="modal-stock-entry">
+<div class="modal modal-sm">
+  <div class="modal-header"><span class="modal-title">Monthly Stock Entry</span><button class="modal-close" onclick="closeModal(&#39;modal-stock-entry&#39;)">×</button></div>
+  <div class="form-grid">
+    <div class="form-group"><label class="form-label">Item *</label><select class="form-input" id="se-item"><option value="">Select item...</option></select></div>
+    <div class="form-group"><label class="form-label">Month *</label><input class="form-input" id="se-month" type="month"></div>
+    <div class="form-group"><label class="form-label">Opening Stock</label><input class="form-input" id="se-open" type="number" value="0"></div>
+    <div class="form-group"><label class="form-label">Received</label><input class="form-input" id="se-recv" type="number" value="0"></div>
+    <div class="form-group"><label class="form-label">Used / Consumed</label><input class="form-input" id="se-used" type="number" value="0"></div>
+  </div>
+  <div class="alert alert-green" id="se-preview"></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-stock-entry&#39;)">Cancel</button>
+    <button class="btn btn-primary" onclick="saveStockEntry()">Save Entry</button>
+  </div>
+</div>
+</div>
+
+<!-- PRINT AREA (hidden, for printing) -->
+<div class="print-area" id="print-area"></div>
+
+<script>
+// ========== STATE ==========
+let S={students:[],fees:[],blocks:[],rooms:[],assignments:[],expCats:[],expenses:[],orders:[],stockItems:[],stockEntries:[],settings:{name:'Everest Hostel',phone:'',email:'',address:''}};
+let currentViewStudent=null;
+let currentReceiptFee=null;
+
+function save(){try{localStorage.setItem('eh2',JSON.stringify(S))}catch(e){alert('Storage full. Please backup and clear data.')}}
+function load(){try{let d=localStorage.getItem('eh2');if(d)S=JSON.parse(d)}catch(e){}}
+load();
+
+// ========== NAVIGATION ==========
+function showSection(sec){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('active');
+  let nav=document.getElementById('nav-'+sec);if(nav)nav.classList.add('active');
+  let mnav=document.getElementById('mnav-'+sec);if(mnav)mnav.classList.add('active');
+  let titles={dashboard:'Dashboard',students:'Students',fees:'Fee Management',rooms:'Rooms',expenses:'Expenses',orders:'Orders & Stock',reports:'Reports',settings:'Settings'};
+  document.getElementById('page-title').textContent=titles[sec]||sec;
+  closeSidebar();
+  if(sec==='dashboard')renderDashboard();
+  else if(sec==='students')renderStudents();
+  else if(sec==='fees'){renderFees();renderPendingList();renderAdvanceList()}
+  else if(sec==='rooms'){renderRoomView();renderBlocksTree();renderAssignments()}
+  else if(sec==='expenses'){renderExpenses();renderCats()}
+  else if(sec==='orders'){renderOrders();renderStockItems();populateStockMonths();renderStock()}
+  else if(sec==='reports'){initReports()}
+  else if(sec==='settings')loadSettings();
+  populateAllSelects();
+}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}
+function toggleMobileMenu(){let m=document.getElementById('mobile-more-menu');m.style.display=m.style.display==='block'?'none':'block'}
+document.addEventListener('click',e=>{let m=document.getElementById('mobile-more-menu');if(m&&!m.contains(e.target)&&!e.target.closest('.mobile-nav-item'))m.style.display='none'});
+
+// ========== TABS ==========
+function switchTab(el,groupId,targetId){
+  let section=el.closest('.tab-bar').parentElement;
+  section.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  let target=document.getElementById(targetId);if(target)target.classList.add('active');
+}
+
+// ========== MODALS ==========
+function openModal(id){document.getElementById(id).classList.add('open');populateAllSelects()}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+// ========== HELPERS ==========
+function uid(){return Date.now()+Math.random().toString(36).slice(2)}
+function today(){return new Date().toISOString().slice(0,10)}
+function thisMonth(){return new Date().toISOString().slice(0,7)}
+function previewImg(inp,prevId){let f=inp.files[0];if(f){let r=new FileReader();r.onload=e=>{let el=document.getElementById(prevId);el.src=e.target.result;el.style.display='block'};r.readAsDataURL(f)}}
+function fmtRs(n){return 'Rs '+(n||0).toLocaleString()}
+function initials(name){return(name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}
+function avatarHtml(s,size=''){let cls=size?'avatar avatar-lg':'avatar';return s.photo?`<div class="${cls}"><img src="${s.photo}" alt="${s.name}"></div>`:`<div class="${cls}">${initials(s.name)}</div>`}
+function statusBadge(status){let map={'Paid':'badge-green','Partial':'badge-yellow','Pending':'badge-red','Pending':'badge-yellow','Ordered':'badge-blue','Received':'badge-green','Cancelled':'badge-red','Active':'badge-green'};return`<span class="badge ${map[status]||'badge-gray'}">${status}</span>`}
+
+function populateAllSelects(){
+  // Fee student select
+  ['fee-student','assign-student'].forEach(id=>{let el=document.getElementById(id);if(el){let v=el.value;el.innerHTML='<option value="">Select student...</option>';S.students.forEach(s=>el.innerHTML+=`<option value="${s.id}">${s.name}</option>`);el.value=v}});
+  // Fee filter student
+  let ffs=document.getElementById('fee-filter-student');if(ffs){let v=ffs.value;ffs.innerHTML='<option value="">All Students</option>';S.students.forEach(s=>ffs.innerHTML+=`<option value="${s.id}">${s.name}</option>`);ffs.value=v}
+  // Assign room
+  let ar=document.getElementById('assign-room');if(ar){ar.innerHTML='<option value="">Select room...</option>';S.rooms.forEach(r=>{let b=S.blocks.find(b=>b.id===r.blockId);let fl=b?.floors.find(f=>f.id===r.floorId);ar.innerHTML+=`<option value="${r.id}">${b?b.name:'?'} - ${fl?fl.name:'?'} - Rm ${r.number} (${r.type})</option>`})}
+  // Block selects in modal-block
+  ['floor-blk','room-blk'].forEach(id=>{let el=document.getElementById(id);if(el){let v=el.value;el.innerHTML='<option value="">Select block...</option>';S.blocks.forEach(b=>el.innerHTML+=`<option value="${b.id}">${b.name}</option>`);el.value=v}});
+  // Expense category selects
+  ['exp-cat','exp-filter-cat','sub-parent'].forEach(id=>{let el=document.getElementById(id);if(el){let v=el.value;el.innerHTML=id==='exp-filter-cat'?'<option value="">All Categories</option>':'<option value="">Select category...</option>';S.expCats.forEach(c=>el.innerHTML+=`<option value="${c.id}">${c.icon||''} ${c.name}</option>`);el.value=v}});
+  // Stock items
+  let sei=document.getElementById('se-item');if(sei){let v=sei.value;sei.innerHTML='<option value="">Select item...</option>';S.stockItems.forEach(i=>sei.innerHTML+=`<option value="${i.id}">${i.name} (${i.unit||'-'})</option>`);sei.value=v}
+  populateStockMonths();
+}
+
+// ========== STUDENTS ==========
+function saveStudent(){
+  let name=document.getElementById('s-name').value.trim();
+  if(!name)return alert('Student name is required');
+  let fee=Number(document.getElementById('s-fee').value);
+  if(!fee)return alert('Monthly fee is required');
+  let editId=document.getElementById('s-edit-id').value;
+  let existing=editId?S.students.find(s=>s.id===editId):null;
+  let pf=document.getElementById('s-photo').files[0];
+  let cf=document.getElementById('s-cit-photo').files[0];
+  function done(photo,citPhoto){
+    let data={name,age:document.getElementById('s-age').value,dob:document.getElementById('s-dob').value,phone:document.getElementById('s-phone').value,citizenship:document.getElementById('s-cit').value,fee,address:document.getElementById('s-address').value,photo:photo||(existing?existing.photo:''),citPhoto:citPhoto||(existing?existing.citPhoto:''),parentName:document.getElementById('s-pname').value,parentOcc:document.getElementById('s-pocc').value,parentPhone:document.getElementById('s-pphone').value,parentRel:document.getElementById('s-prel').value};
+    if(editId&&existing){
+      Object.assign(existing,data);
+    } else {
+      S.students.push({id:uid(),...data,joinDate:today(),advanceBalance:0,active:true});
+    }
+    save();closeModal('modal-student');
+    document.getElementById('s-edit-id').value='';
+    document.getElementById('student-modal-title').textContent='Add New Student';
+    document.getElementById('student-save-btn').textContent='Save Student';
+    ['s-name','s-age','s-dob','s-phone','s-cit','s-fee','s-address','s-pname','s-pocc','s-pphone','s-prel'].forEach(id=>document.getElementById(id).value='');
+    ['s-photo-prev','s-cit-prev'].forEach(id=>{let e=document.getElementById(id);e.style.display='none';e.src=''});
+    renderStudents();renderDashboard();
+  }
+  function readF(f,cb){if(f){let r=new FileReader();r.onload=e=>cb(e.target.result);r.readAsDataURL(f)}else cb('')}
+  readF(pf,p=>readF(cf,c=>done(p,c)));
+}
+
+function editStudent(id){
+  let s=S.students.find(s=>s.id===id);if(!s)return;
+  document.getElementById('s-edit-id').value=id;
+  document.getElementById('student-modal-title').textContent='Edit Student';
+  document.getElementById('student-save-btn').textContent='Update Student';
+  document.getElementById('s-name').value=s.name||'';
+  document.getElementById('s-age').value=s.age||'';
+  document.getElementById('s-dob').value=s.dob||'';
+  document.getElementById('s-phone').value=s.phone||'';
+  document.getElementById('s-cit').value=s.citizenship||'';
+  document.getElementById('s-fee').value=s.fee||'';
+  document.getElementById('s-address').value=s.address||'';
+  document.getElementById('s-pname').value=s.parentName||'';
+  document.getElementById('s-pocc').value=s.parentOcc||'';
+  document.getElementById('s-pphone').value=s.parentPhone||'';
+  document.getElementById('s-prel').value=s.parentRel||'';
+  let pp=document.getElementById('s-photo-prev');
+  if(s.photo){pp.src=s.photo;pp.style.display='block';}else{pp.src='';pp.style.display='none';}
+  let cp=document.getElementById('s-cit-prev');
+  if(s.citPhoto){cp.src=s.citPhoto;cp.style.display='block';}else{cp.src='';cp.style.display='none';}
+  closeModal('modal-view-student');
+  openModal('modal-student');
+}
+
+function renderStudents(){
+  let q=(document.getElementById('student-search')?.value||'').toLowerCase();
+  let list=S.students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.phone?.includes(q)||s.citizenship?.includes(q));
+  let tb=document.getElementById('students-tbody');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="icon">👥</div><p>${q?'No students match your search':'No students yet. Add your first student!'}</p></div></td></tr>`;return}
+  tb.innerHTML=list.map(s=>{
+    let asgn=S.assignments.find(a=>a.studentId===s.id);
+    let room=asgn?S.rooms.find(r=>r.id===asgn.roomId):null;
+    let block=room?S.blocks.find(b=>b.id===room.blockId):null;
+    return`<tr>
+      <td>${s.photo?`<img src="${s.photo}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--g2)">`:`<div class="avatar">${initials(s.name)}</div>`}</td>
+      <td><strong>${s.name}</strong><br><span style="font-size:11px;color:var(--muted)">${s.citizenship||'—'}</span></td>
+      <td>${s.age||'—'}</td>
+      <td>${room?`<span class="badge badge-blue">${block?block.name+' ':''}Rm ${room.number}</span>`:`<span class="badge badge-gray">Unassigned</span>`}</td>
+      <td>${s.phone||'—'}</td>
+      <td><strong>${fmtRs(s.fee)}</strong>${s.advanceBalance?`<br><span style="font-size:11px;color:var(--b4)">Adv: ${fmtRs(s.advanceBalance)}</span>`:''}
+      </td>
+      <td>${statusBadge('Active')}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-outline btn-xs" onclick="viewStudent('${s.id}')">View</button>
+        <button class="btn btn-red btn-xs" onclick="deleteStudent('${s.id}')">Del</button>
+      </td>
+    </tr>`}).join('');
+}
+
+function viewStudent(id){
+  let s=S.students.find(s=>s.id===id);if(!s)return;
+  currentViewStudent=s;
+  let asgn=S.assignments.find(a=>a.studentId===id);
+  let room=asgn?S.rooms.find(r=>r.id===asgn.roomId):null;
+  let block=room?S.blocks.find(b=>b.id===room.blockId):null;
+  let floor=block?block.floors.find(f=>f.id===room?.floorId):null;
+  let fees=S.fees.filter(f=>f.studentId===id);
+  let totalPaid=fees.reduce((a,f)=>a+f.paid,0);
+  document.getElementById('student-profile').innerHTML=`
+    <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap">
+      ${s.photo?`<img src="${s.photo}" style="width:80px;height:80px;border-radius:12px;object-fit:cover;border:3px solid var(--g2);flex-shrink:0">`:`<div class="avatar avatar-lg">${initials(s.name)}</div>`}
+      <div style="flex:1">
+        <h3 style="font-size:19px;font-weight:800">${s.name}</h3>
+        <p style="color:var(--muted);font-size:12px;margin:3px 0">Joined: ${s.joinDate}</p>
+        ${room?`<span class="badge badge-blue">${block?block.name:''} • ${floor?floor.name:''} • Room ${room.number} (${room.type})</span>`:'<span class="badge badge-gray">No Room Assigned</span>'}
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="badge badge-green">Fee: ${fmtRs(s.fee)}/mo</span>
+          ${s.advanceBalance?`<span class="badge badge-purple">Advance: ${fmtRs(s.advanceBalance)}</span>`:''}
+          <span class="badge badge-blue">Paid Total: ${fmtRs(totalPaid)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-subtitle">Personal Details</div>
+    <div class="info-row"><div class="info-label">Age / DOB</div><div class="info-val">${s.age||'—'} / ${s.dob||'—'}</div></div>
+    <div class="info-row"><div class="info-label">Phone</div><div class="info-val">${s.phone||'—'}</div></div>
+    <div class="info-row"><div class="info-label">Citizenship No.</div><div class="info-val">${s.citizenship||'—'}</div></div>
+    <div class="info-row"><div class="info-label">Address</div><div class="info-val">${s.address||'—'}</div></div>
+    <div class="section-subtitle">Parent / Guardian</div>
+    <div class="info-row"><div class="info-label">Name</div><div class="info-val">${s.parentName||'—'} <span style="color:var(--muted);font-size:11px">${s.parentRel?'('+s.parentRel+')':''}</span></div></div>
+    <div class="info-row"><div class="info-label">Occupation</div><div class="info-val">${s.parentOcc||'—'}</div></div>
+    <div class="info-row"><div class="info-label">Phone</div><div class="info-val">${s.parentPhone||'—'}</div></div>
+    ${s.citPhoto?`<div class="section-subtitle">Citizenship Document</div><img src="${s.citPhoto}" style="max-width:220px;border-radius:10px;border:1px solid var(--border)">`:'' }
+    <div class="section-subtitle">Fee History (Last 6)</div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Month</th><th>Fee</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead>
+      <tbody>${fees.slice(-6).reverse().map(f=>`<tr><td>${f.month}</td><td>${fmtRs(f.feeAmount)}</td><td style="color:var(--g4);font-weight:600">${fmtRs(f.paid)}</td><td style="color:${f.balance?'var(--r3)':'var(--g4)'}">${f.balance?fmtRs(f.balance):'Paid'}</td><td>${statusBadge(f.balance?'Partial':'Paid')}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted)">No fee records</td></tr>'}</tbody>
+    </table></div>
+  `;
+  document.getElementById('btn-edit-student').onclick=()=>{editStudent(s.id)};
+  openModal('modal-view-student');
+}
+
+function deleteStudent(id){
+  if(!confirm('Delete this student? This will also remove their room assignment and fee records.'))return;
+  S.students=S.students.filter(s=>s.id!==id);
+  S.assignments=S.assignments.filter(a=>a.studentId!==id);
+  S.fees=S.fees.filter(f=>f.studentId!==id);
+  save();renderStudents();renderDashboard();
+}
+
+// ========== FEES ==========
+function fillStudentFee(){
+  let sid=document.getElementById('fee-student').value;
+  if(sid){
+    let s=S.students.find(s=>s.id===sid);
+    if(s){document.getElementById('fee-amt').value=s.fee;calcFeePreview()}
+  }
+}
+function calcFeePreview(){
+  let sid=document.getElementById('fee-student').value;
+  if(!sid)return;
+  let s=S.students.find(s=>s.id===sid);if(!s)return;
+  let feeAmt=Number(document.getElementById('fee-amt').value)||s.fee;
+  let paid=Number(document.getElementById('fee-paid').value)||0;
+  let adv=s.advanceBalance||0;
+  let totalAvail=paid+adv;
+  let balance=Math.max(0,feeAmt-totalAvail);
+  let newAdv=Math.max(0,totalAvail-feeAmt);
+  let el=document.getElementById('fee-calc');
+  el.innerHTML=`<strong>Fee:</strong> ${fmtRs(feeAmt)} | <strong>Advance:</strong> ${fmtRs(adv)} | <strong>Now Paying:</strong> ${fmtRs(paid)}<br>
+  ${balance?`<span style="color:var(--r3)">⚠ Remaining Balance: ${fmtRs(balance)}</span>`:`<span style="color:var(--g4)">✓ Fully Paid</span>`}
+  ${newAdv?` | <span style="color:var(--b4)">New Advance: ${fmtRs(newAdv)}</span>`:''}`;
+}
+
+function saveFee(){
+  let sid=document.getElementById('fee-student').value;
+  let month=document.getElementById('fee-month-inp').value;
+  let paid=Number(document.getElementById('fee-paid').value);
+  if(!sid)return alert('Select a student');
+  if(!month)return alert('Select a month');
+  if(!paid)return alert('Enter amount paid');
+  let s=S.students.find(s=>s.id===sid);if(!s)return;
+  let feeAmt=Number(document.getElementById('fee-amt').value)||s.fee;
+  let adv=s.advanceBalance||0;
+  let totalAvail=paid+adv;
+  let balance=Math.max(0,feeAmt-totalAvail);
+  let newAdv=Math.max(0,totalAvail-feeAmt);
+  s.advanceBalance=newAdv;
+  let rec={id:uid(),studentId:sid,studentName:s.name,month,feeAmount:feeAmt,paid,balance,advance:newAdv,advUsed:adv,method:document.getElementById('fee-method').value,notes:document.getElementById('fee-notes').value,date:today()};
+  S.fees.push(rec);save();
+  closeModal('modal-fee');
+  ['fee-amt','fee-paid','fee-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fee-calc').innerHTML='';
+  renderFees();renderPendingList();renderAdvanceList();renderDashboard();
+  currentReceiptFee=rec;
+  if(confirm('Payment recorded! Show receipt?'))showReceipt(rec.id);
+}
+
+function renderFees(){
+  let fsid=document.getElementById('fee-filter-student')?.value;
+  let fm=document.getElementById('fee-filter-month')?.value;
+  let list=S.fees.filter(f=>(!fsid||f.studentId===fsid)&&(!fm||f.month===fm));
+  list=list.slice().reverse();
+  let tb=document.getElementById('fees-tbody');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div class="icon">💰</div><p>No fee records found</p></div></td></tr>`;return}
+  tb.innerHTML=list.map(f=>`<tr>
+    <td><strong>${f.studentName}</strong></td>
+    <td>${f.month}</td>
+    <td>${fmtRs(f.feeAmount)}</td>
+    <td style="color:var(--g4);font-weight:600">${fmtRs(f.paid)}</td>
+    <td style="color:${f.balance?'var(--r3)':'var(--g4)'}">${f.balance?fmtRs(f.balance):'—'}</td>
+    <td style="color:var(--b4)">${f.advance?fmtRs(f.advance):'—'}</td>
+    <td style="font-size:11px">${f.date}</td>
+    <td>${statusBadge(f.balance?'Partial':'Paid')}</td>
+    <td style="white-space:nowrap">
+      <button class="btn btn-outline btn-xs" onclick="showReceipt('${f.id}')">Receipt</button>
+      <button class="btn btn-red btn-xs" onclick="deleteFee('${f.id}')">Del</button>
+    </td>
+  </tr>`).join('');
+  // Update stats
+  let allFees=S.fees;
+  let totalCollected=allFees.reduce((a,f)=>a+f.paid,0);
+  let totalPending=allFees.reduce((a,f)=>a+f.balance,0);
+  let mFees=allFees.filter(f=>f.month===thisMonth());
+  let monthTotal=mFees.reduce((a,f)=>a+f.paid,0);
+  let totalAdv=S.students.reduce((a,s)=>a+(s.advanceBalance||0),0);
+  document.getElementById('f-total').textContent=fmtRs(totalCollected);
+  document.getElementById('f-pending').textContent=fmtRs(totalPending);
+  document.getElementById('f-month').textContent=fmtRs(monthTotal);
+  document.getElementById('f-advance').textContent=fmtRs(totalAdv);
+}
+
+function deleteFee(id){
+  if(!confirm('Delete this fee record?'))return;
+  S.fees=S.fees.filter(f=>f.id!==id);save();renderFees();
+}
+
+function renderPendingList(){
+  let el=document.getElementById('pending-list');if(!el)return;
+  let students=S.students.filter(s=>{let fees=S.fees.filter(f=>f.studentId===s.id);let balance=fees.reduce((a,f)=>a+f.balance,0);return balance>0});
+  if(!students.length){el.innerHTML='<div class="empty-state"><div class="icon">✅</div><p>No pending fees. All students are up to date!</p></div>';return}
+  el.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Student</th><th>Pending Records</th><th>Total Pending</th><th>Action</th></tr></thead><tbody>
+  ${students.map(s=>{let fees=S.fees.filter(f=>f.studentId===s.id&&f.balance>0);let total=fees.reduce((a,f)=>a+f.balance,0);return`<tr>
+    <td><strong>${s.name}</strong></td>
+    <td>${fees.length} month(s)</td>
+    <td style="color:var(--r3);font-weight:700">${fmtRs(total)}</td>
+    <td><button class="btn btn-primary btn-xs" onclick="openFeeModal('${s.id}')">Pay Now</button></td>
+  </tr>`}).join('')}</tbody></table></div>`;
+}
+function openFeeModal(sid){
+  openModal('modal-fee');
+  setTimeout(()=>{document.getElementById('fee-student').value=sid;fillStudentFee()},100);
+}
+
+function renderAdvanceList(){
+  let el=document.getElementById('advance-list');if(!el)return;
+  let students=S.students.filter(s=>s.advanceBalance>0);
+  if(!students.length){el.innerHTML='<div class="empty-state"><div class="icon">💳</div><p>No advance balances</p></div>';return}
+  el.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Student</th><th>Advance Balance</th></tr></thead><tbody>
+  ${students.map(s=>`<tr><td><strong>${s.name}</strong></td><td style="color:var(--b4);font-weight:700">${fmtRs(s.advanceBalance)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function showReceipt(feeId){
+  let f=S.fees.find(f=>f.id===feeId);if(!f)return;
+  let hostel=S.settings;
+  let paid=f.balance===0;
+  document.getElementById('receipt-content').innerHTML=`<div class="receipt">
+    <div class="receipt-header">
+      <h3>${hostel.name||'Everest Hostel'}</h3>
+      <p>${hostel.address||''} ${hostel.phone?'| '+hostel.phone:''}</p>
+      <p style="margin-top:6px;font-size:12px;opacity:0.9">Fee Receipt</p>
+    </div>
+    <div class="receipt-body">
+      <div class="receipt-row"><span>Receipt No.</span><span>#${f.id.slice(-6).toUpperCase()}</span></div>
+      <div class="receipt-row"><span>Student Name</span><span><strong>${f.studentName}</strong></span></div>
+      <div class="receipt-row"><span>For Month</span><span>${f.month}</span></div>
+      <div class="receipt-row"><span>Payment Date</span><span>${f.date}</span></div>
+      <div class="receipt-row"><span>Method</span><span>${f.method||'Cash'}</span></div>
+      ${f.notes?`<div class="receipt-row"><span>Notes</span><span>${f.notes}</span></div>`:''}
+      <div style="height:8px"></div>
+      <div class="receipt-row"><span>Total Fee</span><span>${fmtRs(f.feeAmount)}</span></div>
+      ${f.advUsed?`<div class="receipt-row"><span>Advance Used</span><span style="color:var(--b4)">- ${fmtRs(f.advUsed)}</span></div>`:''}
+      <div class="receipt-row total"><span>Amount Paid</span><span>${fmtRs(f.paid)}</span></div>
+      ${f.balance?`<div class="receipt-row" style="color:var(--r3)"><span>Remaining</span><span>${fmtRs(f.balance)}</span></div>`:''}
+      ${f.advance?`<div class="receipt-row" style="color:var(--b4)"><span>New Advance</span><span>${fmtRs(f.advance)}</span></div>`:''}
+      <div class="receipt-stamp"><div class="paid-stamp ${paid?'':'partial-stamp'}">${paid?'PAID':'PARTIAL'}</div></div>
+    </div>
+    <div class="receipt-footer">Thank you! Keep this receipt for your records.</div>
+  </div>`;
+  openModal('modal-receipt');
+}
+
+function printReceipt(){
+  let content=document.getElementById('receipt-content').innerHTML;
+  let pa=document.getElementById('print-area');
+  pa.innerHTML=`<div class="print-receipt">${content}</div>`;
+  pa.style.display='block';
+  window.print();
+  pa.style.display='none';
+  pa.innerHTML='';
+}
+
+// ========== ID CARD ==========
+function printIDCard(){
+  let s=currentViewStudent;if(!s)return;
+  let asgn=S.assignments.find(a=>a.studentId===s.id);
+  let room=asgn?S.rooms.find(r=>r.id===asgn.roomId):null;
+  let block=room?S.blocks.find(b=>b.id===room.blockId):null;
+  let hostel=S.settings;
+  let photoHtml=s.photo?`<img src="${s.photo}" style="width:80px;height:90px;border-radius:8px;object-fit:cover;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.15)">`:`<div style="width:80px;height:90px;border-radius:8px;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:var(--g4);border:3px solid #fff">${initials(s.name)}</div>`;
+  let cardHtml=`<div class="id-card">
+    <div class="id-card-header">
+      <h3>🏔 ${hostel.name||'Everest Hostel'}</h3>
+      <p>${hostel.address||'Student Identity Card'}</p>
+    </div>
+    <div class="id-card-body">
+      ${photoHtml}
+      <div class="id-card-info">
+        <div class="id-card-name">${s.name}</div>
+        <div class="id-row">DOB: <span>${s.dob||'—'}</span></div>
+        <div class="id-row">Phone: <span>${s.phone||'—'}</span></div>
+        <div class="id-row">Citizenship: <span>${s.citizenship||'—'}</span></div>
+        <div class="id-row">Room: <span>${room?(block?block.name+' ':'')+'Rm '+room.number:'Unassigned'}</span></div>
+        <div class="id-row">Fee: <span>${fmtRs(s.fee)}/mo</span></div>
+      </div>
+    </div>
+    <div class="id-card-footer">
+      <p>Joined: ${s.joinDate}</p>
+      <div class="id-barcode"></div>
+    </div>
+  </div>`;
+  let pa=document.getElementById('print-area');
+  pa.innerHTML=`<div class="print-idcard" style="display:flex;justify-content:center;padding:20px">${cardHtml}</div>`;
+  pa.style.display='block';
+  window.print();
+  pa.style.display='none';
+  pa.innerHTML='';
+}
+
+// ========== ROOMS ==========
+function addBlock(){
+  let name=document.getElementById('blk-name').value.trim();
+  if(!name)return alert('Block name required');
+  S.blocks.push({id:uid(),name,desc:document.getElementById('blk-desc').value,floors:[]});
+  save();document.getElementById('blk-name').value='';document.getElementById('blk-desc').value='';
+  renderRoomView();renderBlocksTree();populateAllSelects();
+}
+function addFloor(){
+  let bid=document.getElementById('floor-blk').value;
+  let name=document.getElementById('floor-name').value.trim();
+  if(!bid||!name)return alert('Fill all fields');
+  let b=S.blocks.find(b=>b.id===bid);
+  b.floors.push({id:uid(),name});
+  save();document.getElementById('floor-name').value='';
+  renderRoomView();renderBlocksTree();
+}
+function populateRoomFloors(){
+  let bid=document.getElementById('room-blk').value;
+  let sel=document.getElementById('room-flr');
+  sel.innerHTML='<option value="">Select floor...</option>';
+  if(bid){let b=S.blocks.find(b=>b.id===bid);if(b)b.floors.forEach(f=>sel.innerHTML+=`<option value="${f.id}">${f.name}</option>`)}
+}
+function addRoom(){
+  let bid=document.getElementById('room-blk').value;
+  let fid=document.getElementById('room-flr').value;
+  let num=document.getElementById('room-num').value.trim();
+  if(!bid||!fid||!num)return alert('Fill all required fields');
+  S.rooms.push({id:uid(),blockId:bid,floorId:fid,number:num,capacity:Number(document.getElementById('room-cap').value)||1,type:document.getElementById('room-type').value,rent:Number(document.getElementById('room-rent').value)||0});
+  save();document.getElementById('room-num').value='';document.getElementById('room-rent').value='';
+  renderRoomView();renderBlocksTree();populateAllSelects();
+}
+
+function renderRoomView(){
+  let el=document.getElementById('room-visual');
+  if(!el)return;
+  if(!S.blocks.length){el.innerHTML='<div class="empty-state"><div class="icon">🏢</div><p>No blocks added yet. Go to Manage Blocks to get started.</p></div>';return}
+  el.innerHTML=S.blocks.map(b=>{
+    let bRooms=S.rooms.filter(r=>r.blockId===b.id);
+    let occ=bRooms.filter(r=>S.assignments.some(a=>a.roomId===r.id)).length;
+    return`<div class="card">
+      <div class="card-header"><span class="card-title">🏢 ${b.name}</span>
+        <div style="display:flex;gap:6px">
+          <span class="badge badge-blue">${occ}/${bRooms.length} occupied</span>
+        </div>
+      </div>
+      ${b.floors.map(f=>{
+        let fRooms=S.rooms.filter(r=>r.blockId===b.id&&r.floorId===f.id);
+        return`<div class="floor-label">📋 ${f.name}</div>
+        ${fRooms.length?`<div class="room-grid">${fRooms.map(r=>{
+          let occ2=S.assignments.filter(a=>a.roomId===r.id);
+          let cls=occ2.length===0?'vacant':occ2.length>=r.capacity?'occupied':'partial';
+          return`<div class="room-card ${cls}">
+            <div style="font-weight:700;font-size:13px">Rm ${r.number}</div>
+            <div style="font-size:11px;color:var(--muted)">${r.type}</div>
+            <div style="font-size:11px;margin-top:3px">${occ2.length}/${r.capacity} ${cls==='vacant'?'<span class="badge badge-green">Vacant</span>':cls==='occupied'?'<span class="badge badge-red">Full</span>':'<span class="badge badge-blue">Partial</span>'}</div>
+            ${occ2.slice(0,3).map(a=>{let s=S.students.find(s=>s.id===a.studentId);return s?`<div style="font-size:11px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">• ${s.name}</div>`:''}).join('')}
+          </div>`}).join('')}</div>`:
+        '<p style="font-size:12px;color:var(--muted);padding:8px 0">No rooms on this floor</p>'}
+      `}).join('')}
+      ${!b.floors.length?'<p style="color:var(--muted);font-size:13px">No floors added</p>':''}
+    </div>`}).join('');
+}
+
+function renderBlocksTree(){
+  let el=document.getElementById('blocks-tree');if(!el)return;
+  if(!S.blocks.length){el.innerHTML='<div class="empty-state"><div class="icon">🏢</div><p>No blocks yet</p></div>';return}
+  el.innerHTML=S.blocks.map(b=>`
+    <div class="tree-block">
+      <div class="tree-head">🏢 ${b.name} ${b.desc?`<span style="font-weight:400;font-size:12px;color:var(--muted)">${b.desc}</span>`:''}
+        <div style="margin-left:auto;display:flex;gap:4px">
+          <button class="btn btn-blue btn-xs" onclick="editBlock('${b.id}')">✏️ Edit</button>
+          <button class="btn btn-red btn-xs" onclick="delBlock('${b.id}')">Delete</button>
+        </div>
+      </div>
+      ${b.floors.map(f=>`
+        <div class="tree-floor">📋 ${f.name}
+          <div style="margin-left:auto;display:flex;gap:4px">
+            <button class="btn btn-blue btn-xs" onclick="editFloor('${b.id}','${f.id}')">✏️ Edit</button>
+            <button class="btn btn-red btn-xs" onclick="delFloor('${b.id}','${f.id}')">Del</button>
+          </div>
+        </div>
+        ${S.rooms.filter(r=>r.blockId===b.id&&r.floorId===f.id).map(r=>{
+          let occ=S.assignments.filter(a=>a.roomId===r.id).length;
+          return`<div class="tree-room">🚪 Rm ${r.number} — ${r.type} — Cap: ${r.capacity} — ${occ} occupied ${r.rent?'— Rent: '+fmtRs(r.rent):''}
+            <div style="margin-left:auto;display:flex;gap:4px">
+              <button class="btn btn-blue btn-xs" onclick="editRoom('${r.id}')">✏️ Edit</button>
+              <button class="btn btn-red btn-xs" onclick="delRoom('${r.id}')">Del</button>
+            </div>
+          </div>`}).join('')}
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function delBlock(id){if(!confirm('Delete block and all its rooms?'))return;S.rooms.filter(r=>r.blockId===id).forEach(r=>{S.assignments=S.assignments.filter(a=>a.roomId!==r.id)});S.rooms=S.rooms.filter(r=>r.blockId!==id);S.blocks=S.blocks.filter(b=>b.id!==id);save();renderRoomView();renderBlocksTree();populateAllSelects()}
+function delFloor(bid,fid){let b=S.blocks.find(b=>b.id===bid);if(!b)return;S.rooms.filter(r=>r.blockId===bid&&r.floorId===fid).forEach(r=>{S.assignments=S.assignments.filter(a=>a.roomId!==r.id)});S.rooms=S.rooms.filter(r=>!(r.blockId===bid&&r.floorId===fid));b.floors=b.floors.filter(f=>f.id!==fid);save();renderRoomView();renderBlocksTree()}
+function delRoom(id){if(!confirm('Delete this room?'))return;S.assignments=S.assignments.filter(a=>a.roomId!==id);S.rooms=S.rooms.filter(r=>r.id!==id);save();renderRoomView();renderBlocksTree();populateAllSelects()}
+
+function assignRoom(){
+  let sid=document.getElementById('assign-student').value;
+  let rid=document.getElementById('assign-room').value;
+  if(!sid||!rid)return alert('Select both student and room');
+  let room=S.rooms.find(r=>r.id===rid);
+  let curOcc=S.assignments.filter(a=>a.roomId===rid).length;
+  if(curOcc>=room.capacity)return alert('Room is full');
+  S.assignments=S.assignments.filter(a=>a.studentId!==sid);
+  S.assignments.push({id:uid(),studentId:sid,roomId:rid,date:today()});
+  save();renderAssignments();renderRoomView();
+}
+function renderAssignments(){
+  let tb=document.getElementById('assign-tbody');if(!tb)return;
+  if(!S.assignments.length){tb.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div class="icon">🔑</div><p>No assignments yet</p></div></td></tr>`;return}
+  tb.innerHTML=S.assignments.map(a=>{
+    let s=S.students.find(s=>s.id===a.studentId);
+    let r=S.rooms.find(r=>r.id===a.roomId);
+    let b=r?S.blocks.find(b=>b.id===r.blockId):null;
+    let fl=b?b.floors.find(f=>f.id===r?.floorId):null;
+    return`<tr><td>${s?.name||'?'}</td><td>${b?.name||'?'}</td><td>${fl?.name||'?'}</td><td>Rm ${r?.number||'?'}</td><td>${r?.type||'?'}</td><td>${a.date}</td>
+    <td><button class="btn btn-red btn-xs" onclick="unassign('${a.id}')">Remove</button></td></tr>`}).join('');
+}
+function unassign(id){S.assignments=S.assignments.filter(a=>a.id!==id);save();renderAssignments();renderRoomView()}
+
+// ========== EXPENSES ==========
+function addCat(){
+  let name=document.getElementById('cat-name').value.trim();
+  if(!name)return alert('Category name required');
+  S.expCats.push({id:uid(),name,icon:document.getElementById('cat-icon').value,subs:[]});
+  save();document.getElementById('cat-name').value='';document.getElementById('cat-icon').value='';
+  renderCats();populateAllSelects();
+}
+function addSubCat(){
+  let pid=document.getElementById('sub-parent').value;
+  let name=document.getElementById('subcat-name').value.trim();
+  if(!pid||!name)return alert('Fill all fields');
+  let c=S.expCats.find(c=>c.id===pid);c.subs.push(name);
+  save();document.getElementById('subcat-name').value='';renderCats();
+}
+function populateSubCats(){
+  let cid=document.getElementById('exp-cat').value;
+  let sel=document.getElementById('exp-subcat');
+  sel.innerHTML='<option value="">Select sub-category...</option>';
+  if(cid){let c=S.expCats.find(c=>c.id===cid);if(c)c.subs.forEach(s=>sel.innerHTML+=`<option>${s}</option>`)}
+}
+function renderCats(){
+  let el=document.getElementById('cats-list');if(!el)return;
+  if(!S.expCats.length){el.innerHTML='<div class="empty-state"><div class="icon">🗂</div><p>No categories yet</p></div>';return}
+  el.innerHTML=S.expCats.map(c=>`<div style="padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <strong>${c.icon||''} ${c.name}</strong>
+      <button class="btn btn-red btn-xs" onclick="delCat('${c.id}')">Delete</button>
+    </div>
+    <div>${c.subs.map(s=>`<span class="tag">${s} <span class="tag-close" onclick="delSubCat('${c.id}','${s}')">×</span></span>`).join('')}</div>
+    ${!c.subs.length?'<span style="font-size:12px;color:var(--muted)">No sub-categories</span>':''}
+  </div>`).join('');
+  document.getElementById('e-cats').textContent=S.expCats.length;
+}
+function delCat(id){S.expCats=S.expCats.filter(c=>c.id!==id);save();renderCats();renderExpenses();populateAllSelects()}
+function delSubCat(cid,sub){let c=S.expCats.find(c=>c.id===cid);if(c)c.subs=c.subs.filter(s=>s!==sub);save();renderCats()}
+
+function saveExpense(){
+  let cid=document.getElementById('exp-cat').value;
+  let amt=Number(document.getElementById('exp-amt').value);
+  let date=document.getElementById('exp-date').value;
+  if(!cid||!amt||!date)return alert('Fill required fields');
+  let cat=S.expCats.find(c=>c.id===cid);
+  S.expenses.push({id:uid(),catId:cid,catName:cat?.name||'',catIcon:cat?.icon||'',subcat:document.getElementById('exp-subcat').value,amount:amt,date,desc:document.getElementById('exp-desc').value});
+  save();closeModal('modal-expense');
+  ['exp-amt','exp-desc'].forEach(id=>document.getElementById(id).value='');
+  renderExpenses();renderDashboard();
+}
+function renderExpenses(){
+  let fcid=document.getElementById('exp-filter-cat')?.value;
+  let fm=document.getElementById('exp-filter-month')?.value;
+  let list=S.expenses.filter(e=>(!fcid||e.catId===fcid)&&(!fm||e.date.startsWith(fm)));
+  list=list.slice().reverse();
+  let tb=document.getElementById('exp-tbody');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="icon">📊</div><p>No expenses found</p></div></td></tr>`;return}
+  tb.innerHTML=list.map(e=>`<tr>
+    <td>${e.date}</td>
+    <td>${e.catIcon||''} <strong>${e.catName}</strong></td>
+    <td>${e.subcat||'—'}</td>
+    <td>${e.desc||'—'}</td>
+    <td style="color:var(--r3);font-weight:700">${fmtRs(e.amount)}</td>
+    <td><button class="btn btn-red btn-xs" onclick="delExp('${e.id}')">Del</button></td>
+  </tr>`).join('');
+  let total=S.expenses.reduce((a,e)=>a+e.amount,0);
+  let mTotal=S.expenses.filter(e=>e.date.startsWith(thisMonth())).reduce((a,e)=>a+e.amount,0);
+  document.getElementById('e-total').textContent=fmtRs(total);
+  document.getElementById('e-month').textContent=fmtRs(mTotal);
+  document.getElementById('e-count').textContent=S.expenses.length;
+}
+function delExp(id){S.expenses=S.expenses.filter(e=>e.id!==id);save();renderExpenses()}
+
+// ========== ORDERS ==========
+function saveOrder(){
+  let item=document.getElementById('ord-item').value.trim();
+  let qty=document.getElementById('ord-qty').value;
+  if(!item||!qty)return alert('Fill required fields');
+  let eid=document.getElementById('ord-edit-id').value;
+  let rec={id:eid||uid(),item,qty:Number(qty),unit:document.getElementById('ord-unit').value,vendor:document.getElementById('ord-vendor').value,amount:Number(document.getElementById('ord-amt').value)||0,date:document.getElementById('ord-date').value||today(),status:document.getElementById('ord-status').value,notes:document.getElementById('ord-notes').value};
+  if(eid){S.orders=S.orders.map(o=>o.id===eid?rec:o)}else S.orders.push(rec);
+  save();closeModal('modal-order');
+  ['ord-item','ord-qty','ord-unit','ord-vendor','ord-amt','ord-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ord-edit-id').value='';
+  document.getElementById('order-modal-title').textContent='New Order';
+  renderOrders();renderDashboard();
+}
+function editOrder(id){
+  let o=S.orders.find(o=>o.id===id);if(!o)return;
+  document.getElementById('ord-edit-id').value=id;
+  document.getElementById('order-modal-title').textContent='Edit Order';
+  document.getElementById('ord-item').value=o.item;
+  document.getElementById('ord-qty').value=o.qty;
+  document.getElementById('ord-unit').value=o.unit||'';
+  document.getElementById('ord-vendor').value=o.vendor||'';
+  document.getElementById('ord-amt').value=o.amount||'';
+  document.getElementById('ord-date').value=o.date;
+  document.getElementById('ord-status').value=o.status;
+  document.getElementById('ord-notes').value=o.notes||'';
+  openModal('modal-order');
+}
+function renderOrders(){
+  let fs=document.getElementById('ord-filter-status')?.value;
+  let list=S.orders.filter(o=>!fs||o.status===fs).slice().reverse();
+  let tb=document.getElementById('ord-tbody');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div class="icon">🛒</div><p>No orders</p></div></td></tr>`;return}
+  let bcls={Pending:'badge-yellow',Ordered:'badge-blue',Received:'badge-green',Cancelled:'badge-red'};
+  tb.innerHTML=list.map(o=>`<tr>
+    <td>${o.date}</td><td><strong>${o.item}</strong></td><td>${o.qty}</td><td>${o.unit||'—'}</td>
+    <td>${o.vendor||'—'}</td><td>${o.amount?fmtRs(o.amount):'—'}</td>
+    <td><span class="badge ${bcls[o.status]||'badge-gray'}">${o.status}</span></td>
+    <td style="max-width:100px;font-size:11px">${o.notes||'—'}</td>
+    <td style="white-space:nowrap">
+      <button class="btn btn-outline btn-xs" onclick="editOrder('${o.id}')">Edit</button>
+      <button class="btn btn-red btn-xs" onclick="delOrder('${o.id}')">Del</button>
+    </td>
+  </tr>`).join('');
+}
+function delOrder(id){S.orders=S.orders.filter(o=>o.id!==id);save();renderOrders()}
+
+// ========== STOCK ==========
+function saveStockItem(){
+  let name=document.getElementById('si-name').value.trim();
+  if(!name)return alert('Item name required');
+  S.stockItems.push({id:uid(),name,unit:document.getElementById('si-unit').value,minLevel:Number(document.getElementById('si-min').value)||0,cat:document.getElementById('si-cat').value});
+  save();closeModal('modal-stock-item');
+  ['si-name','si-unit','si-min','si-cat'].forEach(id=>document.getElementById(id).value='');
+  renderStockItems();populateAllSelects();
+}
+function renderStockItems(){
+  let tb=document.getElementById('sitems-tbody');if(!tb)return;
+  if(!S.stockItems.length){tb.innerHTML=`<tr><td colspan="5"><div class="empty-state"><div class="icon">🗃</div><p>No stock items yet</p></div></td></tr>`;return}
+  tb.innerHTML=S.stockItems.map(i=>`<tr>
+    <td><strong>${i.name}</strong></td><td>${i.cat||'—'}</td><td>${i.unit||'—'}</td>
+    <td>${i.minLevel||'—'}</td>
+    <td><button class="btn btn-red btn-xs" onclick="delStockItem('${i.id}')">Del</button></td>
+  </tr>`).join('');
+}
+function delStockItem(id){S.stockItems=S.stockItems.filter(i=>i.id!==id);save();renderStockItems()}
+
+function saveStockEntry(){
+  let iid=document.getElementById('se-item').value;
+  let month=document.getElementById('se-month').value;
+  if(!iid||!month)return alert('Fill required fields');
+  let opening=Number(document.getElementById('se-open').value)||0;
+  let received=Number(document.getElementById('se-recv').value)||0;
+  let used=Number(document.getElementById('se-used').value)||0;
+  let closing=opening+received-used;
+  S.stockEntries=S.stockEntries.filter(e=>!(e.itemId===iid&&e.month===month));
+  S.stockEntries.push({id:uid(),itemId:iid,month,opening,received,used,closing});
+  save();closeModal('modal-stock-entry');populateStockMonths();renderStock();
+}
+
+function populateStockMonths(){
+  let sel=document.getElementById('stock-month-sel');if(!sel)return;
+  let months=[...new Set(S.stockEntries.map(e=>e.month))].sort().reverse();
+  if(!months.includes(thisMonth()))months.unshift(thisMonth());
+  let cur=sel.value||thisMonth();
+  sel.innerHTML=months.map(m=>`<option value="${m}" ${m===cur?'selected':''}>${m}</option>`).join('');
+}
+function renderStock(){
+  let month=document.getElementById('stock-month-sel')?.value||thisMonth();
+  let entries=S.stockEntries.filter(e=>e.month===month);
+  let tb=document.getElementById('stock-tbody');if(!tb)return;
+  if(!entries.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div class="icon">📦</div><p>No stock entries for ${month}</p></div></td></tr>`;return}
+  tb.innerHTML=entries.map(e=>{
+    let item=S.stockItems.find(i=>i.id===e.itemId);
+    let pct=item?.minLevel?Math.min(100,Math.round(e.closing/item.minLevel*100)):null;
+    let barCls=pct===null?'':(pct<30?'low':pct<60?'mid':'');
+    return`<tr>
+      <td><strong>${item?.name||'Unknown'}</strong></td>
+      <td>${item?.cat||'—'}</td>
+      <td>${e.opening}</td><td>${e.received}</td><td>${e.used}</td>
+      <td><strong>${e.closing}</strong></td>
+      <td>${item?.unit||'—'}</td>
+      <td style="min-width:80px">${pct!==null?`<div style="font-size:11px;margin-bottom:3px">${pct}% ${pct<30?'⚠️':''}</div><div class="stock-bar"><div class="stock-bar-fill ${barCls}" style="width:${pct}%"></div></div>`:'—'}</td>
+      <td><button class="btn btn-red btn-xs" onclick="delStockEntry('${e.id}')">Del</button></td>
+    </tr>`}).join('');
+}
+function delStockEntry(id){S.stockEntries=S.stockEntries.filter(e=>e.id!==id);save();renderStock()}
+
+// ========== DASHBOARD ==========
+function renderDashboard(){
+  let occ=new Set(S.assignments.map(a=>a.roomId)).size;
+  document.getElementById('d-students').textContent=S.students.length;
+  document.getElementById('d-rooms').textContent=occ+'/'+S.rooms.length;
+  let mFees=S.fees.filter(f=>f.month===thisMonth());
+  document.getElementById('d-fee-month').textContent=fmtRs(mFees.reduce((a,f)=>a+f.paid,0));
+  document.getElementById('d-pending').textContent=S.fees.filter(f=>f.balance>0).length;
+  // Recent students
+  let rs=document.getElementById('dash-students');
+  if(rs)rs.innerHTML=S.students.length?S.students.slice(-5).reverse().map(s=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f5f5f5">
+    ${s.photo?`<img src="${s.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--g2)">`:`<div class="avatar">${initials(s.name)}</div>`}
+    <div><div style="font-weight:600;font-size:13px">${s.name}</div><div style="font-size:11px;color:var(--muted)">${fmtRs(s.fee)}/mo • ${s.joinDate}</div></div>
+  </div>`).join(''):'<div class="empty-state"><div class="icon">👥</div><p>No students yet</p></div>';
+  // Recent fees
+  let rf=document.getElementById('dash-fees');
+  if(rf)rf.innerHTML=S.fees.length?S.fees.slice(-5).reverse().map(f=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px">
+    <div><strong>${f.studentName}</strong><span style="color:var(--muted);font-size:11px"> • ${f.month}</span></div>
+    <div>${statusBadge(f.balance?'Partial':'Paid')} <span style="color:var(--g4);font-weight:600;margin-left:4px">${fmtRs(f.paid)}</span></div>
+  </div>`).join(''):'<div class="empty-state"><div class="icon">💳</div><p>No payments yet</p></div>';
+  // Pending orders
+  let po=document.getElementById('dash-orders');
+  if(po){let pending=S.orders.filter(o=>o.status==='Pending'||o.status==='Ordered');
+  po.innerHTML=pending.length?pending.slice(0,4).map(o=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px">
+    <div><strong>${o.item}</strong> × ${o.qty} ${o.unit||''}</div>
+    <div>${statusBadge(o.status)}</div>
+  </div>`).join(''):'<div class="empty-state"><div class="icon">✅</div><p>No pending orders</p></div>'}
+  // Expenses
+  let de=document.getElementById('dash-expenses');
+  let mExp=S.expenses.filter(e=>e.date.startsWith(thisMonth()));
+  if(de)de.innerHTML=mExp.length?mExp.slice(-5).reverse().map(e=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px">
+    <div>${e.catIcon||''} ${e.catName} ${e.subcat?'> '+e.subcat:''}</div>
+    <div style="color:var(--r3);font-weight:600">${fmtRs(e.amount)}</div>
+  </div>`).join(''):'<div class="empty-state"><div class="icon">📊</div><p>No expenses this month</p></div>';
+}
+
+// ========== REPORTS ==========
+function initReports(){
+  let mn=document.getElementById('rep-month');if(mn&&!mn.value)mn.value=thisMonth();
+  let mf=document.getElementById('rep-fee-month');if(mf&&!mf.value)mf.value=thisMonth();
+  let me=document.getElementById('rep-exp-month');if(me&&!me.value)me.value=thisMonth();
+  renderMonthlyReport();renderStudentReport();renderFeeReport();renderExpReport();
+}
+function renderMonthlyReport(){
+  let month=document.getElementById('rep-month')?.value||thisMonth();
+  let el=document.getElementById('monthly-report-content');if(!el)return;
+  let mFees=S.fees.filter(f=>f.month===month);
+  let mExp=S.expenses.filter(e=>e.date.startsWith(month));
+  let feeIn=mFees.reduce((a,f)=>a+f.paid,0);
+  let expOut=mExp.reduce((a,e)=>a+e.amount,0);
+  let net=feeIn-expOut;
+  let occ=new Set(S.assignments.map(a=>a.roomId)).size;
+  // Category breakdown
+  let catBreakdown={};mExp.forEach(e=>{catBreakdown[e.catName]=(catBreakdown[e.catName]||0)+e.amount});
+  let catRows=Object.entries(catBreakdown).sort((a,b)=>b[1]-a[1]);
+  let maxCat=catRows[0]?catRows[0][1]:1;
+  el.innerHTML=`
+    <div class="stats-grid" style="margin-bottom:16px">
+      <div class="stat-card"><div class="stat-num">${fmtRs(feeIn)}</div><div class="stat-label">Fee Income</div></div>
+      <div class="stat-card"><div class="stat-num red">${fmtRs(expOut)}</div><div class="stat-label">Expenses</div></div>
+      <div class="stat-card"><div class="stat-num ${net>=0?'':'red'}">${fmtRs(net)}</div><div class="stat-label">Net Balance</div></div>
+      <div class="stat-card"><div class="stat-num blue">${S.students.length}</div><div class="stat-label">Students</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="report-card">
+        <div style="font-weight:700;margin-bottom:10px">Fee Summary</div>
+        <div class="info-row"><div class="info-label">Total Students</div><div class="info-val">${S.students.length}</div></div>
+        <div class="info-row"><div class="info-label">Payments Made</div><div class="info-val">${mFees.length}</div></div>
+        <div class="info-row"><div class="info-label">Fully Paid</div><div class="info-val">${mFees.filter(f=>!f.balance).length}</div></div>
+        <div class="info-row"><div class="info-label">Partial</div><div class="info-val">${mFees.filter(f=>f.balance>0).length}</div></div>
+        <div class="info-row"><div class="info-label">Total Collected</div><div class="info-val" style="color:var(--g4);font-weight:700">${fmtRs(feeIn)}</div></div>
+        <div class="info-row"><div class="info-label">Pending</div><div class="info-val" style="color:var(--r3);font-weight:700">${fmtRs(mFees.reduce((a,f)=>a+f.balance,0))}</div></div>
+      </div>
+      <div class="report-card">
+        <div style="font-weight:700;margin-bottom:10px">Room Occupancy</div>
+        <div class="info-row"><div class="info-label">Total Rooms</div><div class="info-val">${S.rooms.length}</div></div>
+        <div class="info-row"><div class="info-label">Occupied</div><div class="info-val">${occ}</div></div>
+        <div class="info-row"><div class="info-label">Vacant</div><div class="info-val">${S.rooms.length-occ}</div></div>
+        <div class="info-row"><div class="info-label">Occupancy Rate</div><div class="info-val">${S.rooms.length?Math.round(occ/S.rooms.length*100):0}%</div></div>
+        <div class="info-row"><div class="info-label">Total Students</div><div class="info-val">${S.students.length}</div></div>
+        <div class="info-row"><div class="info-label">Unassigned</div><div class="info-val">${S.students.filter(s=>!S.assignments.find(a=>a.studentId===s.id)).length}</div></div>
+      </div>
+    </div>
+    ${catRows.length?`<div class="report-card"><div style="font-weight:700;margin-bottom:12px">Expense Breakdown</div>
+    ${catRows.map(([cat,amt])=>`<div class="report-bar-row">
+      <div class="report-bar-label">${cat}</div>
+      <div class="report-bar-wrap"><div class="report-bar-fill" style="width:${Math.round(amt/maxCat*100)}%"></div></div>
+      <div class="report-bar-val">${fmtRs(amt)}</div>
+    </div>`).join('')}</div>`:''}
+  `;
+}
+function renderStudentReport(){
+  let el=document.getElementById('student-report-content');if(!el)return;
+  let total=S.students.length;
+  let assigned=S.assignments.length;
+  el.innerHTML=`
+    <div class="stats-grid" style="margin-bottom:14px">
+      <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total Students</div></div>
+      <div class="stat-card"><div class="stat-num blue">${assigned}</div><div class="stat-label">Assigned Rooms</div></div>
+      <div class="stat-card"><div class="stat-num orange">${total-assigned}</div><div class="stat-label">Unassigned</div></div>
+      <div class="stat-card"><div class="stat-num">${fmtRs(S.students.reduce((a,s)=>a+s.fee,0))}</div><div class="stat-label">Total Monthly Fee</div></div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>Name</th><th>Age</th><th>Room</th><th>Phone</th><th>Fee/Mo</th><th>Advance</th><th>Joined</th></tr></thead>
+      <tbody>${S.students.map((s,i)=>{
+        let asgn=S.assignments.find(a=>a.studentId===s.id);
+        let room=asgn?S.rooms.find(r=>r.id===asgn.roomId):null;
+        let block=room?S.blocks.find(b=>b.id===room.blockId):null;
+        return`<tr><td>${i+1}</td><td><strong>${s.name}</strong></td><td>${s.age||'—'}</td>
+        <td>${room?block?.name+' Rm '+room.number:'<span class="badge badge-gray">Unassigned</span>'}</td>
+        <td>${s.phone||'—'}</td><td>${fmtRs(s.fee)}</td>
+        <td>${s.advanceBalance?fmtRs(s.advanceBalance):'—'}</td><td>${s.joinDate}</td></tr>`}).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--muted)">No students</td></tr>'}</tbody>
+    </table></div>`;
+}
+function renderFeeReport(){
+  let month=document.getElementById('rep-fee-month')?.value||thisMonth();
+  let el=document.getElementById('fee-report-content');if(!el)return;
+  let fees=S.fees.filter(f=>f.month===month);
+  let total=fees.reduce((a,f)=>a+f.paid,0);
+  let pending=fees.reduce((a,f)=>a+f.balance,0);
+  el.innerHTML=`
+    <div class="stats-grid" style="margin-bottom:14px">
+      <div class="stat-card"><div class="stat-num">${fmtRs(total)}</div><div class="stat-label">Collected</div></div>
+      <div class="stat-card"><div class="stat-num red">${fmtRs(pending)}</div><div class="stat-label">Pending</div></div>
+      <div class="stat-card"><div class="stat-num blue">${fees.filter(f=>!f.balance).length}</div><div class="stat-label">Paid</div></div>
+      <div class="stat-card"><div class="stat-num orange">${fees.filter(f=>f.balance>0).length}</div><div class="stat-label">Partial</div></div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>Student</th><th>Fee</th><th>Paid</th><th>Balance</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
+      <tbody>${fees.map((f,i)=>`<tr><td>${i+1}</td><td><strong>${f.studentName}</strong></td>
+        <td>${fmtRs(f.feeAmount)}</td><td style="color:var(--g4);font-weight:600">${fmtRs(f.paid)}</td>
+        <td style="color:${f.balance?'var(--r3)':'var(--g4)'}">${f.balance?fmtRs(f.balance):'—'}</td>
+        <td>${f.method||'Cash'}</td><td>${f.date}</td><td>${statusBadge(f.balance?'Partial':'Paid')}</td></tr>`).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--muted)">No records for this month</td></tr>'}</tbody>
+    </table></div>`;
+}
+function renderExpReport(){
+  let month=document.getElementById('rep-exp-month')?.value||thisMonth();
+  let el=document.getElementById('exp-report-content');if(!el)return;
+  let exps=S.expenses.filter(e=>e.date.startsWith(month)).slice().reverse();
+  let total=exps.reduce((a,e)=>a+e.amount,0);
+  let catBreakdown={};exps.forEach(e=>{catBreakdown[e.catName]=(catBreakdown[e.catName]||0)+e.amount});
+  let catRows=Object.entries(catBreakdown).sort((a,b)=>b[1]-a[1]);
+  el.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div class="stat-card"><div class="stat-num red">${fmtRs(total)}</div><div class="stat-label">Total Expenses</div></div>
+      <div class="stat-card"><div class="stat-num blue">${exps.length}</div><div class="stat-label">Transactions</div></div>
+    </div>
+    ${catRows.length?`<div class="report-card" style="margin-bottom:14px"><div style="font-weight:700;margin-bottom:10px">By Category</div>
+    ${catRows.map(([cat,amt])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>${cat}</span><span style="font-weight:700;color:var(--r3)">${fmtRs(amt)}</span></div>`).join('')}</div>`:''}
+    <div class="table-wrap"><table>
+      <thead><tr><th>Date</th><th>Category</th><th>Sub-cat</th><th>Description</th><th>Amount</th></tr></thead>
+      <tbody>${exps.map(e=>`<tr><td>${e.date}</td><td>${e.catIcon||''} ${e.catName}</td><td>${e.subcat||'—'}</td><td>${e.desc||'—'}</td><td style="color:var(--r3);font-weight:700">${fmtRs(e.amount)}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted)">No expenses this month</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+function printReport(){
+  let activeContent=document.querySelector('#sec-reports .tab-content.active');
+  if(!activeContent)return;
+  let pa=document.getElementById('print-area');
+  let hostel=S.settings;
+  pa.innerHTML=`<div style="font-family:sans-serif">
+    <div style="text-align:center;margin-bottom:20px;border-bottom:2px solid #2e7d32;padding-bottom:12px">
+      <h2 style="color:#1b5e20;font-size:20px">🏔 ${hostel.name||'Everest Hostel'}</h2>
+      ${hostel.address?`<p style="font-size:12px;color:#555">${hostel.address}</p>`:''}
+      <p style="font-size:12px;color:#555">Report generated: ${new Date().toLocaleDateString()}</p>
+    </div>
+    ${activeContent.innerHTML}
+  </div>`;
+  pa.style.display='block';
+  window.print();
+  pa.style.display='none';
+  pa.innerHTML='';
+}
+
+// ========== SETTINGS ==========
+function loadSettings(){
+  let s=S.settings;
+  document.getElementById('set-name').value=s.name||'Everest Hostel';
+  document.getElementById('set-phone').value=s.phone||'';
+  document.getElementById('set-email').value=s.email||'';
+  document.getElementById('set-address').value=s.address||'';
+}
+function saveSettings(){
+  S.settings={name:document.getElementById('set-name').value,phone:document.getElementById('set-phone').value,email:document.getElementById('set-email').value,address:document.getElementById('set-address').value};
+  save();alert('Settings saved!');
+}
+function backupData(){
+  let json=JSON.stringify(S,null,2);
+  let blob=new Blob([json],{type:'application/json'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a');
+  a.href=url;a.download=`everest-hostel-backup-${today()}.json`;
+  a.click();URL.revokeObjectURL(url);
+}
+function restoreData(input){
+  let f=input.files[0];if(!f)return;
+  if(!confirm('This will REPLACE all current data with the backup. Are you sure?'))return;
+  let r=new FileReader();
+  r.onload=e=>{try{S=JSON.parse(e.target.result);save();alert('Data restored successfully!');showSection('dashboard')}catch(err){alert('Invalid backup file: '+err.message)}};
+  r.readAsText(f);
+}
+function clearAllData(){
+  if(!confirm('This will DELETE ALL data permanently. Are you sure?'))return;
+  if(!confirm('Final warning: All students, fees, rooms, expenses, orders will be deleted. Proceed?'))return;
+  S={students:[],fees:[],blocks:[],rooms:[],assignments:[],expCats:[],expenses:[],orders:[],stockItems:[],stockEntries:[],settings:S.settings};
+  save();alert('All data cleared.');showSection('dashboard');
+}
+
+// ========== LIVE CALC on fee modal ==========
+document.addEventListener('input',e=>{if(e.target.id==='fee-paid'||e.target.id==='fee-amt')calcFeePreview()});
+
+// ========== STOCK ENTRY PREVIEW ==========
+['se-open','se-recv','se-used'].forEach(id=>{
+  let el=document.getElementById(id);
+  if(el)el.addEventListener('input',()=>{
+    let o=Number(document.getElementById('se-open').value)||0;
+    let r2=Number(document.getElementById('se-recv').value)||0;
+    let u=Number(document.getElementById('se-used').value)||0;
+    document.getElementById('se-preview').textContent=`Closing Stock: ${o+r2-u}`;
+  });
+});
+
+// ========== ROOM EDIT FUNCTIONS ==========
+function editBlock(id){
+  let b=S.blocks.find(b=>b.id===id);if(!b)return;
+  let newName=prompt('Edit Block Name:',b.name);
+  if(newName===null)return;
+  let newDesc=prompt('Edit Description (optional):',b.desc||'');
+  if(newDesc===null)return;
+  b.name=newName.trim()||b.name;
+  b.desc=newDesc.trim();
+  save();renderRoomView();renderBlocksTree();populateAllSelects();
+}
+
+function editFloor(bid,fid){
+  let b=S.blocks.find(b=>b.id===bid);if(!b)return;
+  let fl=b.floors.find(f=>f.id===fid);if(!fl)return;
+  let newName=prompt('Edit Floor Name:',fl.name);
+  if(newName===null)return;
+  fl.name=newName.trim()||fl.name;
+  save();renderRoomView();renderBlocksTree();
+}
+
+function editRoom(id){
+  id=String(id);
+  let r=S.rooms.find(r=>String(r.id)===id);if(!r)return;
+  // Switch modal-block to Room tab and pre-fill
+  openModal('modal-block');
+  let tabs=document.querySelectorAll('#modal-block .tab-bar .tab');
+  let contents=document.querySelectorAll('#modal-block .tab-content');
+  tabs.forEach(t=>t.classList.remove('active'));
+  contents.forEach(c=>c.classList.remove('active'));
+  // Activate Room tab (index 2)
+  if(tabs[2])tabs[2].classList.add('active');
+  let roomTab=document.getElementById('blk-room');
+  if(roomTab)roomTab.classList.add('active');
+  // Pre-fill fields
+  let blkSel=document.getElementById('room-blk');
+  if(blkSel)blkSel.value=r.blockId;
+  populateRoomFloors();
+  setTimeout(()=>{
+    let flrSel=document.getElementById('room-flr');
+    if(flrSel)flrSel.value=r.floorId;
+  },60);
+  document.getElementById('room-num').value=r.number;
+  document.getElementById('room-cap').value=r.capacity;
+  document.getElementById('room-type').value=r.type;
+  document.getElementById('room-rent').value=r.rent||'';
+  // Swap button to Update mode
+  let btn=document.querySelector('#blk-room .btn-primary');
+  if(!btn)return;
+  btn.textContent='Update Room';
+  btn.onclick=function(){
+    let num=document.getElementById('room-num').value.trim();
+    if(!num)return alert('Room number is required');
+    r.number=num;
+    r.capacity=Number(document.getElementById('room-cap').value)||1;
+    r.type=document.getElementById('room-type').value;
+    r.rent=Number(document.getElementById('room-rent').value)||0;
+    save();renderRoomView();renderBlocksTree();populateAllSelects();
+    // Reset button back to Add mode
+    btn.textContent='Add Room';
+    btn.onclick=addRoom;
+    closeModal('modal-block');
+  };
+}
+
+</script>
+
+
+</body></html>
